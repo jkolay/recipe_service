@@ -30,7 +30,7 @@ public class IngredientService {
         this.commonConfigMapper = commonConfigMapper;
     }
 
-    public Ingredient create(CreateIngredientRequest request) {
+    public IngredientResponse create(CreateIngredientRequest request) {
         if(ingredientRepository.findByIngredientEqualsIgnoreCase(request.getName())!=null){
             throw new IngredientDuplicationException(MessageConfig.INGREDIENT_ALREADY_EXISTS);
         }
@@ -38,24 +38,26 @@ public class IngredientService {
         ingredient.setCreatedAt(LocalDateTime.now());
         ingredient.setUpdatedAt(LocalDateTime.now());
         ingredient = ingredientRepository.save(ingredient);
-        return ingredient;
+        return commonConfigMapper.mapIngredientToIngredientResponse(ingredient);
     }
 
 
     public Set<Ingredient> getIngredientsByIds(List<Integer> ingredientIds) {
-        return ingredientRepository.findByIdIn(ingredientIds).stream()
-               .collect(Collectors.toSet());
+        return ingredientIds.stream()
+                .map(this::findById)
+                .collect(Collectors.toSet());
     }
 
     public Ingredient findById(int id) {
         return ingredientRepository.findById(id)
-                .orElseThrow(() -> new RecipeNotFoundException());
+                .orElseThrow(() -> new RecipeNotFoundException(MessageConfig.INGREDIENT_IS_NOT_AVAILABLE + id));
     }
 
-    public List<Ingredient> list(int page, int size) {
+    public List<IngredientResponse> list(int page, int size) {
         Pageable pageRequest
                 = PageRequest.of(page, size);
         return ingredientRepository.findAll(pageRequest)
+                .map(ingredient -> commonConfigMapper.mapIngredientToIngredientResponse(ingredient))
                 .getContent();
     }
 

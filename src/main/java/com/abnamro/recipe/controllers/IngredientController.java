@@ -46,12 +46,7 @@ public class IngredientController {
     public List<IngredientResponse> getIngredientList(@PathVariable(name = "page") int page,
                                                       @PathVariable(name = "size") int size) {
         logger.info("Getting the ingredients");
-        List<Ingredient> list = ingredientService.list(page, size);
-
-        return list
-                .stream()
-                .map(ingredient -> commonConfigMapper.mapIngredientToIngredientResponse(ingredient))
-                .collect(Collectors.toList());
+        return ingredientService.list(page, size);
     }
 
     @Operation(description = "List one ingredient by its ID")
@@ -75,7 +70,7 @@ public class IngredientController {
     public IngredientResponse createIngredient(
             @Parameter(description = "Properties of the Ingredient", required = true) @Valid @RequestBody CreateIngredientRequest request) {
         logger.info("Creating the ingredient with properties");
-        return commonConfigMapper.mapIngredientToIngredientResponse(ingredientService.create(request));
+        return ingredientService.create(request);
     }
 
     @Operation(description = "Delete the ingredient")

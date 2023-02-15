@@ -4,6 +4,7 @@ import com.abnamro.recipe.model.persistence.Ingredient;
 import com.abnamro.recipe.model.persistence.Recipe;
 import com.abnamro.recipe.model.request.CreateIngredientRequest;
 import com.abnamro.recipe.model.request.CreateRecipeRequest;
+import com.abnamro.recipe.model.request.UpdateRecipeRequest;
 import com.abnamro.recipe.model.response.IngredientResponse;
 import com.abnamro.recipe.model.response.RecipeResponse;
 import org.mapstruct.Mapper;
@@ -19,4 +20,6 @@ public interface CommonConfigMapper {
     Recipe mapCreateRecipeRequestToRecipe(CreateRecipeRequest recipeRequest);
 
     RecipeResponse mapRecipeToRecipeResponse(Recipe recipe);
+
+    Recipe mapUpdateRecipeRequestToRecipe(UpdateRecipeRequest updateRecipeRequest);
 }

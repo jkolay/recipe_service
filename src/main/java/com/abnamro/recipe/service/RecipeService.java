@@ -1,6 +1,7 @@
 package com.abnamro.recipe.service;
 
 import com.abnamro.recipe.config.MessageConfig;
+import com.abnamro.recipe.exception.IngredientDuplicationException;
 import com.abnamro.recipe.exception.RecipeNotFoundException;
 import com.abnamro.recipe.mapper.CommonConfigMapper;
 import com.abnamro.recipe.model.persistence.Ingredient;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -38,16 +40,19 @@ public class RecipeService {
         this.commonConfigMapper = commonConfigMapper;
     }
 
-    public Integer createRecipe(CreateRecipeRequest createRecipeRequest) {
-        Set<Ingredient> ingredients = ingredientService.getIngredientsByIds(createRecipeRequest.getIngredientIds());
-
+    public RecipeResponse createRecipe(CreateRecipeRequest createRecipeRequest) {
+        Recipe existingRecipe= recipeRepository.findByNameEqualsIgnoreCase(createRecipeRequest.getName());
+        if(existingRecipe!=null){
+            throw new IngredientDuplicationException(MessageConfig.RECIPE_ALREADY_EXISTS+ existingRecipe.getId());
+        }
+        Set<Ingredient> ingredients=ingredientService.getIngredientsByIds(createRecipeRequest.getIngredientIds());
         Recipe recipe = commonConfigMapper.mapCreateRecipeRequestToRecipe(createRecipeRequest);
         recipe.setRecipeIngredients(ingredients);
         recipe.setCreatedAt(LocalDateTime.now());
         recipe.setUpdatedAt(LocalDateTime.now());
         Recipe createdRecipe = recipeRepository.save(recipe);
 
-        return createdRecipe.getId();
+        return commonConfigMapper.mapRecipeToRecipeResponse(createdRecipe);
     }
 
     public List<RecipeResponse> getRecipeList(int page, int size) {
@@ -64,17 +69,15 @@ public class RecipeService {
     }
 
     public RecipeResponse updateRecipe(UpdateRecipeRequest updateRecipeRequest) {
-        Recipe recipe = recipeRepository.findById(updateRecipeRequest.getId())
+        Recipe existingRecipe = recipeRepository.findById(updateRecipeRequest.getId())
                 .orElseThrow(() -> new RecipeNotFoundException(MessageConfig.RECIPE_IS_NOT_FOUND));
 
         Set<Ingredient> ingredients =ingredientService.getIngredientsByIds(updateRecipeRequest.getIngredientIds());
 
-        recipe.setName(updateRecipeRequest.getName());
-        recipe.setType(updateRecipeRequest.getType());
-        recipe.setNumberOfServings(updateRecipeRequest.getNumberOfServings());
-        recipe.setInstructions(updateRecipeRequest.getInstructions());
+        Recipe recipe=commonConfigMapper.mapUpdateRecipeRequestToRecipe(updateRecipeRequest);
         recipe.setRecipeIngredients(ingredients);
         recipe.setUpdatedAt(LocalDateTime.now());
+        recipe.setCreatedAt(existingRecipe.getCreatedAt());
 
         recipeRepository.save(recipe);
         return commonConfigMapper.mapRecipeToRecipeResponse(recipe);

@@ -2,9 +2,11 @@ package com.abnamro.recipe.config;
 
 
 import com.abnamro.recipe.exception.IngredientDuplicationException;
+import com.abnamro.recipe.exception.RecipeDuplicationException;
 import com.abnamro.recipe.exception.RecipeNotFoundException;
 import com.abnamro.recipe.model.error.ErrorSeverityLevelCodeType;
 import com.abnamro.recipe.model.error.RecipeErrorModel;
+import com.abnamro.recipe.model.error.RecipeRequestErrorModel;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpHeaders;
@@ -49,7 +51,7 @@ public class ExceptionConfig extends ResponseEntityExceptionHandler {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-        final RecipeErrorModel error = new RecipeErrorModel(errors, RecipeErrorConstants.INVALID_INPUT, ErrorSeverityLevelCodeType.ERROR);
+        final RecipeRequestErrorModel error = new RecipeRequestErrorModel(errors, RecipeErrorConstants.INVALID_INPUT, ErrorSeverityLevelCodeType.ERROR);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -58,6 +60,14 @@ public class ExceptionConfig extends ResponseEntityExceptionHandler {
     @ExceptionHandler(RecipeNotFoundException.class)
     @ResponseBody
     public ResponseEntity<Object> handleNotFoundException(RecipeNotFoundException ex) {
+        HttpStatus status = ex.getStatus() == null ? HttpStatus.NOT_FOUND : ex.getStatus();
+        final RecipeErrorModel error = new RecipeErrorModel(ex.getMessage(), RecipeErrorConstants.INVALID_INPUT, ErrorSeverityLevelCodeType.ERROR);
+        return new ResponseEntity<>(error, status);
+    }
+
+    @ExceptionHandler(RecipeDuplicationException.class)
+    @ResponseBody
+    public ResponseEntity<Object> handleNotFoundException(RecipeDuplicationException ex) {
         HttpStatus status = ex.getStatus() == null ? HttpStatus.NOT_FOUND : ex.getStatus();
         final RecipeErrorModel error = new RecipeErrorModel(ex.getMessage(), RecipeErrorConstants.INVALID_INPUT, ErrorSeverityLevelCodeType.ERROR);
         return new ResponseEntity<>(error, status);

@@ -14,7 +14,7 @@ import java.util.Set;
 public class RecipeResponse {
     private Integer id;
     private String name;
-    private Set<Ingredient> recipeIngredients;
+    private Set<IngredientResponse> recipeIngredients;
     private String instructions;
     private String type;
     private int numberOfServings;
