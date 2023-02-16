@@ -1,8 +1,8 @@
 package com.abnamro.recipe.search;
 
 import com.abnamro.recipe.model.constant.DatabaseConstant;
-import com.abnamro.recipe.model.persistence.Ingredient;
-import com.abnamro.recipe.model.persistence.Recipe;
+import com.abnamro.recipe.model.persistence.IngredientDao;
+import com.abnamro.recipe.model.persistence.RecipeDao;
 import com.abnamro.recipe.model.search.SearchCriteria;
 import com.abnamro.recipe.model.search.SearchOperation;
 import org.springframework.data.jpa.domain.Specification;
@@ -10,7 +10,7 @@ import org.springframework.data.jpa.domain.Specification;
 import javax.persistence.criteria.*;
 import java.util.Objects;
 
-public class RecipeSpecification implements Specification<Recipe> {
+public class RecipeSpecification implements Specification<RecipeDao> {
     private final SearchCriteria searchCriteria;
 
     public RecipeSpecification(final SearchCriteria searchCriteria) {
@@ -19,7 +19,7 @@ public class RecipeSpecification implements Specification<Recipe> {
     }
 
     @Override
-    public Predicate toPredicate(Root<Recipe> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+    public Predicate toPredicate(Root<RecipeDao> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
         String strToSearch = searchCriteria.getValue().toString().toLowerCase();
         query.distinct(true);
         switch (Objects.requireNonNull(SearchOperation.getOperation(searchCriteria.getOperation()).get())) {
@@ -51,10 +51,9 @@ public class RecipeSpecification implements Specification<Recipe> {
 
         }
         return null;
-
     }
 
-    private Join<Recipe, Ingredient> ingredientJoin(Root<Recipe> root) {
+    private Join<RecipeDao, IngredientDao> ingredientJoin(Root<RecipeDao> root) {
         return root.join(DatabaseConstant.JOINED_TABLE_NAME, JoinType.INNER);
     }
 }

@@ -34,6 +34,7 @@ public class CreateRecipeRequest {
     private int numberOfServings;
 
     @Schema(description = "The ids of the ingredients needed to make the recipe", example = "[1,2]")
+    @NotNull(message = RecipeValidationMessageConfig.INGREDIENT_LIST_CANNOT_BE_EMPTY)
     private List<Integer> ingredientIds;
 
     @NotBlank(message = RecipeValidationMessageConfig.INSTRUCTION_IS_NOT_VALID)

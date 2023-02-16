@@ -1,6 +1,5 @@
 package com.abnamro.recipe.model.response;
 
-import com.abnamro.recipe.model.persistence.Ingredient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

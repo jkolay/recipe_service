@@ -1,6 +1,6 @@
 package com.abnamro.recipe.search;
 
-import com.abnamro.recipe.model.persistence.Recipe;
+import com.abnamro.recipe.model.persistence.RecipeDao;
 import com.abnamro.recipe.model.search.DataOptionReqInput;
 import com.abnamro.recipe.model.search.SearchCriteria;
 import org.springframework.data.jpa.domain.Specification;
@@ -26,11 +26,11 @@ public class RecipeSpecificationBuilder {
         return this;
     }
 
-    public Optional<Specification<Recipe>> build() {
+    public Optional<Specification<RecipeDao>> build() {
         if (params.size() == 0) {
             return null;
         }
-        Specification<Recipe> result = new RecipeSpecification(params.get(0));
+        Specification<RecipeDao> result = new RecipeSpecification(params.get(0));
         for (int idx = 1; idx < params.size(); idx++) {
             SearchCriteria criteria = params.get(idx);
 

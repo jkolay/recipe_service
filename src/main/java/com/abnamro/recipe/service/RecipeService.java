@@ -4,8 +4,8 @@ import com.abnamro.recipe.config.RecipeValidationMessageConfig;
 import com.abnamro.recipe.exception.IngredientDuplicationException;
 import com.abnamro.recipe.exception.RecipeNotFoundException;
 import com.abnamro.recipe.mapper.CommonConfigMapper;
-import com.abnamro.recipe.model.persistence.Ingredient;
-import com.abnamro.recipe.model.persistence.Recipe;
+import com.abnamro.recipe.model.persistence.IngredientDao;
+import com.abnamro.recipe.model.persistence.RecipeDao;
 import com.abnamro.recipe.model.request.CreateRecipeRequest;
 import com.abnamro.recipe.model.request.RecipeSearchRequest;
 import com.abnamro.recipe.model.request.SearchCriteriaRequest;
@@ -46,18 +46,18 @@ public class RecipeService {
     }
 
     public RecipeResponse createRecipe(CreateRecipeRequest createRecipeRequest) {
-        Recipe existingRecipe= recipeRepository.findByNameEqualsIgnoreCase(createRecipeRequest.getName());
-        if(existingRecipe!=null){
-            throw new IngredientDuplicationException(RecipeValidationMessageConfig.RECIPE_ALREADY_EXISTS+ existingRecipe.getId());
+        RecipeDao existingRecipeDao = recipeRepository.findByNameEqualsIgnoreCase(createRecipeRequest.getName());
+        if(existingRecipeDao !=null){
+            throw new IngredientDuplicationException(RecipeValidationMessageConfig.RECIPE_ALREADY_EXISTS+ existingRecipeDao.getId());
         }
-        Set<Ingredient> ingredients=ingredientService.getIngredientsByIds(createRecipeRequest.getIngredientIds());
-        Recipe recipe = commonConfigMapper.mapCreateRecipeRequestToRecipe(createRecipeRequest);
-        recipe.setRecipeIngredients(ingredients);
-        recipe.setCreatedAt(LocalDateTime.now());
-        recipe.setUpdatedAt(LocalDateTime.now());
-        Recipe createdRecipe = recipeRepository.save(recipe);
+        Set<IngredientDao> ingredientDaos =ingredientService.getIngredientsByIds(createRecipeRequest.getIngredientIds());
+        RecipeDao recipeDao = commonConfigMapper.mapCreateRecipeRequestToRecipe(createRecipeRequest);
+        recipeDao.setRecipeIngredients(ingredientDaos);
+        recipeDao.setCreatedAt(LocalDateTime.now());
+        recipeDao.setUpdatedAt(LocalDateTime.now());
+        RecipeDao createdRecipeDao = recipeRepository.save(recipeDao);
 
-        return commonConfigMapper.mapRecipeToRecipeResponse(createdRecipe);
+        return commonConfigMapper.mapRecipeToRecipeResponse(createdRecipeDao);
     }
 
     public List<RecipeResponse> getRecipeList(int page, int size) {
@@ -66,24 +66,24 @@ public class RecipeService {
     }
 
     public RecipeResponse getRecipeById(int id) {
-        Recipe recipe= recipeRepository.findById(id)
+        RecipeDao recipeDao = recipeRepository.findById(id)
                 .orElseThrow(() -> new RecipeNotFoundException(RecipeValidationMessageConfig.RECIPE_IS_NOT_FOUND));
-        return commonConfigMapper.mapRecipeToRecipeResponse(recipe);
+        return commonConfigMapper.mapRecipeToRecipeResponse(recipeDao);
     }
 
     public RecipeResponse updateRecipe(UpdateRecipeRequest updateRecipeRequest) {
-        Recipe existingRecipe = recipeRepository.findById(updateRecipeRequest.getId())
+        RecipeDao existingRecipeDao = recipeRepository.findById(updateRecipeRequest.getId())
                 .orElseThrow(() -> new RecipeNotFoundException(RecipeValidationMessageConfig.RECIPE_IS_NOT_FOUND));
 
-        Set<Ingredient> ingredients =ingredientService.getIngredientsByIds(updateRecipeRequest.getIngredientIds());
+        Set<IngredientDao> ingredientDaos =ingredientService.getIngredientsByIds(updateRecipeRequest.getIngredientIds());
 
-        Recipe recipe=commonConfigMapper.mapUpdateRecipeRequestToRecipe(updateRecipeRequest);
-        recipe.setRecipeIngredients(ingredients);
-        recipe.setUpdatedAt(LocalDateTime.now());
-        recipe.setCreatedAt(existingRecipe.getCreatedAt());
+        RecipeDao recipeDao =commonConfigMapper.mapUpdateRecipeRequestToRecipe(updateRecipeRequest);
+        recipeDao.setRecipeIngredients(ingredientDaos);
+        recipeDao.setUpdatedAt(LocalDateTime.now());
+        recipeDao.setCreatedAt(existingRecipeDao.getCreatedAt());
 
-        recipeRepository.save(recipe);
-        return commonConfigMapper.mapRecipeToRecipeResponse(recipe);
+        recipeRepository.save(recipeDao);
+        return commonConfigMapper.mapRecipeToRecipeResponse(recipeDao);
     }
 
     public void deleteRecipe(int id) {
@@ -96,12 +96,12 @@ public class RecipeService {
 
     public List<RecipeResponse> findBySearchCriteria(RecipeSearchRequest recipeSearchRequest,int page,int size){
         Pageable pageRequest = PageRequest.of(page, size, Sort.by("name").ascending());
-        Specification<Recipe> recipeSpecification = createRecipeSpecificationForSearch(recipeSearchRequest);
-        Page<Recipe> filteredRecipes = recipeRepository.findAll(recipeSpecification, pageRequest);
+        Specification<RecipeDao> recipeSpecification = createRecipeSpecificationForSearch(recipeSearchRequest);
+        Page<RecipeDao> filteredRecipes = recipeRepository.findAll(recipeSpecification, pageRequest);
         return commonConfigMapper.mapRecipesToRecipeResponses(filteredRecipes.getContent());
     }
 
-    private Specification<Recipe> createRecipeSpecificationForSearch(RecipeSearchRequest recipeSearchRequest) {
+    private Specification<RecipeDao> createRecipeSpecificationForSearch(RecipeSearchRequest recipeSearchRequest) {
         List<SearchCriteriaRequest> criteriaRequestList = recipeSearchRequest.getSearchCriteriaRequests();
         if(criteriaRequestList.isEmpty()){
             throw new RecipeNotFoundException(RecipeValidationMessageConfig.FILTER_IS_NOT_PROVIDED);

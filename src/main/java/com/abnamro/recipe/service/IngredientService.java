@@ -5,7 +5,7 @@ import com.abnamro.recipe.config.RecipeValidationMessageConfig;
 import com.abnamro.recipe.exception.IngredientDuplicationException;
 import com.abnamro.recipe.exception.RecipeNotFoundException;
 import com.abnamro.recipe.mapper.CommonConfigMapper;
-import com.abnamro.recipe.model.persistence.Ingredient;
+import com.abnamro.recipe.model.persistence.IngredientDao;
 import com.abnamro.recipe.model.request.CreateIngredientRequest;
 import com.abnamro.recipe.model.response.IngredientResponse;
 import com.abnamro.recipe.repositories.IngredientRepository;
@@ -34,21 +34,21 @@ public class IngredientService {
         if(ingredientRepository.findByIngredientEqualsIgnoreCase(request.getName())!=null){
             throw new IngredientDuplicationException(RecipeValidationMessageConfig.INGREDIENT_ALREADY_EXISTS);
         }
-        Ingredient ingredient = commonConfigMapper.mapCreateIngredientRequestToIngredient(request);
-        ingredient.setCreatedAt(LocalDateTime.now());
-        ingredient.setUpdatedAt(LocalDateTime.now());
-        ingredient = ingredientRepository.save(ingredient);
-        return commonConfigMapper.mapIngredientToIngredientResponse(ingredient);
+        IngredientDao ingredientDao = commonConfigMapper.mapCreateIngredientRequestToIngredient(request);
+        ingredientDao.setCreatedAt(LocalDateTime.now());
+        ingredientDao.setUpdatedAt(LocalDateTime.now());
+        ingredientDao = ingredientRepository.save(ingredientDao);
+        return commonConfigMapper.mapIngredientToIngredientResponse(ingredientDao);
     }
 
 
-    public Set<Ingredient> getIngredientsByIds(List<Integer> ingredientIds) {
+    public Set<IngredientDao> getIngredientsByIds(List<Integer> ingredientIds) {
         return ingredientIds.stream()
                 .map(this::findById)
                 .collect(Collectors.toSet());
     }
 
-    public Ingredient findById(int id) {
+    public IngredientDao findById(int id) {
         return ingredientRepository.findById(id)
                 .orElseThrow(() -> new RecipeNotFoundException(RecipeValidationMessageConfig.INGREDIENT_IS_NOT_AVAILABLE + id));
     }

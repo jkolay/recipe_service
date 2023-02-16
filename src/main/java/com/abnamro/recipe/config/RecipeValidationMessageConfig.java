@@ -25,4 +25,5 @@ public class RecipeValidationMessageConfig {
     public static final String RECIPE_ALREADY_EXISTS = "Recipe is already present with id : ";
     public static final String FILTER_IS_NOT_PROVIDED = "Filter is not provided for search";
     public static final String DB_CONSTRAINT_VIOLATED = "Database constraint violated.";
+    public static final String INGREDIENT_LIST_CANNOT_BE_EMPTY = "Ingredient list can not be null";
 }

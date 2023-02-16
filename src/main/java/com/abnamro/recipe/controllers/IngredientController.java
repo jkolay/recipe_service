@@ -2,7 +2,6 @@ package com.abnamro.recipe.controllers;
 
 
 import com.abnamro.recipe.mapper.CommonConfigMapper;
-import com.abnamro.recipe.model.persistence.Ingredient;
 import com.abnamro.recipe.model.request.CreateIngredientRequest;
 import com.abnamro.recipe.model.response.IngredientResponse;
 import com.abnamro.recipe.service.IngredientService;
@@ -21,7 +20,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "api/v1/ingredient")

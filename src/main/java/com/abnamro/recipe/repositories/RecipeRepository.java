@@ -1,13 +1,12 @@
 package com.abnamro.recipe.repositories;
 
-import com.abnamro.recipe.model.persistence.Ingredient;
-import com.abnamro.recipe.model.persistence.Recipe;
+import com.abnamro.recipe.model.persistence.RecipeDao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RecipeRepository extends JpaRepository<Recipe, Integer>, JpaSpecificationExecutor<Recipe> {
+public interface RecipeRepository extends JpaRepository<RecipeDao, Integer>, JpaSpecificationExecutor<RecipeDao> {
 
-    Recipe findByNameEqualsIgnoreCase(String name);
+    RecipeDao findByNameEqualsIgnoreCase(String name);
 }

@@ -2,14 +2,18 @@ package com.abnamro.recipe.model.persistence;
 
 import com.abnamro.recipe.model.constant.DatabaseConstant;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -18,32 +22,24 @@ import java.util.Set;
 
 @Entity
 @DynamicUpdate
-@Table(name = "recipes")
+@Table(name = "ingredients")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Recipe {
+public class IngredientDao {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "incrementDomain")
     @GenericGenerator(name = "incrementDomain", strategy = "increment")
     private Integer id;
 
     @NotBlank
-    @Column
-    private String name;
+    @Column(nullable = false, unique = true)
+    private String ingredient;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinTable(
-            name = "recipe_ingredient",
-            joinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "ingredient_id", referencedColumnName = "id"))
+    @ManyToMany(mappedBy = DatabaseConstant.JOINED_TABLE_NAME, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JsonIgnoreProperties(DatabaseConstant.JOINED_TABLE_NAME)
-    private Set<Ingredient> recipeIngredients;
-    @Column
-    private String instructions;
-    @Column
-    private String type;
+    private Set<RecipeDao> recipeDaoIngredients;
 
     @Column(updatable = false)
     @CreationTimestamp
@@ -53,7 +49,5 @@ public class Recipe {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    @Column
-    private int numberOfServings;
 
 }

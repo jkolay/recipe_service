@@ -1,7 +1,7 @@
 package com.abnamro.recipe.mapper;
 
-import com.abnamro.recipe.model.persistence.Ingredient;
-import com.abnamro.recipe.model.persistence.Recipe;
+import com.abnamro.recipe.model.persistence.IngredientDao;
+import com.abnamro.recipe.model.persistence.RecipeDao;
 import com.abnamro.recipe.model.request.CreateIngredientRequest;
 import com.abnamro.recipe.model.request.CreateRecipeRequest;
 import com.abnamro.recipe.model.request.SearchCriteriaRequest;
@@ -18,18 +18,18 @@ import java.util.List;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
 public interface CommonConfigMapper {
     @Mapping(target = "ingredient", source = "name")
-    Ingredient mapCreateIngredientRequestToIngredient(CreateIngredientRequest createIngredientRequest);
+    IngredientDao mapCreateIngredientRequestToIngredient(CreateIngredientRequest createIngredientRequest);
 
-    IngredientResponse mapIngredientToIngredientResponse(Ingredient ingredient);
+    IngredientResponse mapIngredientToIngredientResponse(IngredientDao ingredientDao);
 
-    Recipe mapCreateRecipeRequestToRecipe(CreateRecipeRequest recipeRequest);
+    RecipeDao mapCreateRecipeRequestToRecipe(CreateRecipeRequest recipeRequest);
 
-    RecipeResponse mapRecipeToRecipeResponse(Recipe recipe);
+    RecipeResponse mapRecipeToRecipeResponse(RecipeDao recipeDao);
 
-    List<RecipeResponse> mapRecipesToRecipeResponses(List<Recipe> recipe);
+    List<RecipeResponse> mapRecipesToRecipeResponses(List<RecipeDao> recipeList);
 
 
-    Recipe mapUpdateRecipeRequestToRecipe(UpdateRecipeRequest updateRecipeRequest);
+    RecipeDao mapUpdateRecipeRequestToRecipe(UpdateRecipeRequest updateRecipeRequest);
 
     List<SearchCriteria> mapSearchCriteriaRequestsToSearchCriterias(List<SearchCriteriaRequest> criteriaRequest);
 }

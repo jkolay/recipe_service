@@ -1,13 +1,11 @@
 package com.abnamro.recipe.repositories;
 
-import com.abnamro.recipe.model.persistence.Ingredient;
+import com.abnamro.recipe.model.persistence.IngredientDao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface IngredientRepository extends JpaRepository<Ingredient, Integer> {
-    Ingredient findByIngredientEqualsIgnoreCase(String ingredient);
+public interface IngredientRepository extends JpaRepository<IngredientDao, Integer> {
+    IngredientDao findByIngredientEqualsIgnoreCase(String ingredient);
 
 }
