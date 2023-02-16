@@ -15,6 +15,4 @@ import java.util.Set;
 public class IngredientResponse {
     private Integer id;
     private String ingredient;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

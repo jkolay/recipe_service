@@ -1,7 +1,7 @@
 package com.abnamro.recipe.config;
 
 
-public class MessageConfig {
+public class RecipeValidationMessageConfig {
     public static final String ID_NOT_NULL = "Please provide a valid ID.";
     public static final String INGREDIENT_SIZE_NOT_VALID = "Name can be 100 characters long at maximum.";
     public static final String INGREDIENT_PATTERN_NOT_VALID = "The ingredient name should contain only letters and the following characters: ',.- and space.";
@@ -23,4 +23,6 @@ public class MessageConfig {
     public static final String INGREDIENT_ALREADY_EXISTS = "Ingredient is already present.";
     public static final String INGREDIENT_IS_NOT_AVAILABLE = "Ingredient is not available for ingredient Id : ";
     public static final String RECIPE_ALREADY_EXISTS = "Recipe is already present with id : ";
+    public static final String FILTER_IS_NOT_PROVIDED = "Filter is not provided for search";
+    public static final String DB_CONSTRAINT_VIOLATED = "Database constraint violated.";
 }

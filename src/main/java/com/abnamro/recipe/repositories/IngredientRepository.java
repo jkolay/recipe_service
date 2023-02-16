@@ -8,7 +8,6 @@ import java.util.List;
 
 @Repository
 public interface IngredientRepository extends JpaRepository<Ingredient, Integer> {
-    List<Ingredient> findByIdIn(List<Integer> ingredientIds);
     Ingredient findByIngredientEqualsIgnoreCase(String ingredient);
 
 }

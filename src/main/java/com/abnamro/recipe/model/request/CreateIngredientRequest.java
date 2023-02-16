@@ -1,7 +1,7 @@
 package com.abnamro.recipe.model.request;
 
-import com.abnamro.recipe.config.MessageConfig;
-import com.abnamro.recipe.config.ValidationConfig;
+import com.abnamro.recipe.config.RecipeValidationMessageConfig;
+import com.abnamro.recipe.config.ValidationConstant;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,9 +17,9 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateIngredientRequest {
-    @NotBlank(message = MessageConfig.INGREDIENT_NAME_NOT_NULL)
-    @Size(max = ValidationConfig.MAX_LENGTH_NAME, message = MessageConfig.INGREDIENT_SIZE_NOT_VALID)
-    @Pattern(regexp = ValidationConfig.PATTERN_NAME, message = MessageConfig.INGREDIENT_PATTERN_NOT_VALID)
+    @NotBlank(message = RecipeValidationMessageConfig.INGREDIENT_NAME_NOT_NULL)
+    @Size(max = ValidationConstant.MAX_LENGTH_NAME, message = RecipeValidationMessageConfig.INGREDIENT_SIZE_NOT_VALID)
+    @Pattern(regexp = ValidationConstant.PATTERN_NAME, message = RecipeValidationMessageConfig.INGREDIENT_PATTERN_NOT_VALID)
     @Schema(description = "The name of the ingredient", example = "Potato")
     private String name;
 

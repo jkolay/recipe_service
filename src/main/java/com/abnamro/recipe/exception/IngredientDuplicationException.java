@@ -7,6 +7,7 @@ public class IngredientDuplicationException extends RuntimeException implements 
     private HttpStatus status = HttpStatus.NOT_FOUND;
 
     public IngredientDuplicationException() {
+
         super();
     }
 
@@ -16,14 +17,17 @@ public class IngredientDuplicationException extends RuntimeException implements 
     }
 
     public IngredientDuplicationException(String message) {
+
         super(message);
     }
 
     public IngredientDuplicationException(String message, Throwable cause) {
+
         super(message, cause);
     }
 
     public IngredientDuplicationException(Throwable cause) {
+
         super(cause);
     }
 
@@ -32,6 +36,7 @@ public class IngredientDuplicationException extends RuntimeException implements 
     }
 
     public HttpStatus getStatus() {
+
         return status;
     }
 }

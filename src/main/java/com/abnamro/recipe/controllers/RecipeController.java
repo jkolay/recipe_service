@@ -107,7 +107,6 @@ public class RecipeController {
                                              @Parameter(description = "Properties of the the search")
                                              @RequestBody @Valid RecipeSearchRequest recipeSearchRequest) {
         logger.info("Searching the recipe by given criteria");
-        return null;
-        //return recipeService.findBySearchCriteria(recipeSearchRequest, page, size);
+        return recipeService.findBySearchCriteria(recipeSearchRequest, page, size);
     }
 }

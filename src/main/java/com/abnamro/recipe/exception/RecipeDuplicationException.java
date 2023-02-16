@@ -7,6 +7,7 @@ public class RecipeDuplicationException extends RuntimeException implements Cust
     private HttpStatus status = HttpStatus.NOT_FOUND;
 
     public RecipeDuplicationException() {
+
         super();
     }
 
@@ -16,14 +17,17 @@ public class RecipeDuplicationException extends RuntimeException implements Cust
     }
 
     public RecipeDuplicationException(String message) {
+
         super(message);
     }
 
     public RecipeDuplicationException(String message, Throwable cause) {
+
         super(message, cause);
     }
 
     public RecipeDuplicationException(Throwable cause) {
+
         super(cause);
     }
 
@@ -32,6 +36,7 @@ public class RecipeDuplicationException extends RuntimeException implements Cust
     }
 
     public HttpStatus getStatus() {
+
         return status;
     }
 }

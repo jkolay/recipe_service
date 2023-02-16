@@ -1,5 +1,6 @@
 package com.abnamro.recipe.model.persistence;
 
+import com.abnamro.recipe.model.constant.DatabaseConstant;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
@@ -21,7 +22,7 @@ import java.util.Set;
 
 @Entity
 @DynamicUpdate
-@Table( name = "ingredients")
+@Table(name = "ingredients")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -36,8 +37,8 @@ public class Ingredient {
     @Column(nullable = false, unique = true)
     private String ingredient;
 
-    @ManyToMany(mappedBy = "recipeIngredients", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JsonIgnoreProperties("recipeIngredients")
+    @ManyToMany(mappedBy = DatabaseConstant.JOINED_TABLE_NAME, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JsonIgnoreProperties(DatabaseConstant.JOINED_TABLE_NAME)
     private Set<Recipe> recipeIngredients;
 
     @Column(updatable = false)

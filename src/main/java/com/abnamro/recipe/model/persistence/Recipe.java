@@ -1,5 +1,6 @@
 package com.abnamro.recipe.model.persistence;
 
+import com.abnamro.recipe.model.constant.DatabaseConstant;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,7 +38,7 @@ public class Recipe {
             name = "recipe_ingredient",
             joinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "ingredient_id", referencedColumnName = "id"))
-    @JsonIgnoreProperties("ingredientRecipes")
+    @JsonIgnoreProperties(DatabaseConstant.JOINED_TABLE_NAME)
     private Set<Ingredient> recipeIngredients;
     @Column
     private String instructions;

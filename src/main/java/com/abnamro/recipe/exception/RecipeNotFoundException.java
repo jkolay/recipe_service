@@ -24,6 +24,7 @@ public class RecipeNotFoundException extends RuntimeException implements CustomR
     }
 
     public RecipeNotFoundException(Throwable cause) {
+
         super(cause);
     }
 
@@ -32,6 +33,7 @@ public class RecipeNotFoundException extends RuntimeException implements CustomR
     }
 
     public HttpStatus getStatus() {
+
         return status;
     }
 }

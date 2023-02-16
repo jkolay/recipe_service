@@ -1,7 +1,7 @@
 package com.abnamro.recipe.service;
 
 
-import com.abnamro.recipe.config.MessageConfig;
+import com.abnamro.recipe.config.RecipeValidationMessageConfig;
 import com.abnamro.recipe.exception.IngredientDuplicationException;
 import com.abnamro.recipe.exception.RecipeNotFoundException;
 import com.abnamro.recipe.mapper.CommonConfigMapper;
@@ -32,7 +32,7 @@ public class IngredientService {
 
     public IngredientResponse create(CreateIngredientRequest request) {
         if(ingredientRepository.findByIngredientEqualsIgnoreCase(request.getName())!=null){
-            throw new IngredientDuplicationException(MessageConfig.INGREDIENT_ALREADY_EXISTS);
+            throw new IngredientDuplicationException(RecipeValidationMessageConfig.INGREDIENT_ALREADY_EXISTS);
         }
         Ingredient ingredient = commonConfigMapper.mapCreateIngredientRequestToIngredient(request);
         ingredient.setCreatedAt(LocalDateTime.now());
@@ -50,7 +50,7 @@ public class IngredientService {
 
     public Ingredient findById(int id) {
         return ingredientRepository.findById(id)
-                .orElseThrow(() -> new RecipeNotFoundException(MessageConfig.INGREDIENT_IS_NOT_AVAILABLE + id));
+                .orElseThrow(() -> new RecipeNotFoundException(RecipeValidationMessageConfig.INGREDIENT_IS_NOT_AVAILABLE + id));
     }
 
     public List<IngredientResponse> list(int page, int size) {

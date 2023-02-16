@@ -1,9 +1,9 @@
 package com.abnamro.recipe.model.request;
 
 
-import com.abnamro.recipe.config.MessageConfig;
-import com.abnamro.recipe.model.enums.FilterKeyReqInput;
-import com.abnamro.recipe.model.enums.SearchOperationReqInput;
+import com.abnamro.recipe.config.RecipeValidationMessageConfig;
+import com.abnamro.recipe.model.search.FilterKeyReqInput;
+import com.abnamro.recipe.model.search.SearchOperationReqInput;
 import com.abnamro.recipe.validator.EnumValidator;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,8 @@ import javax.validation.Valid;
 @AllArgsConstructor
 public class SearchCriteriaRequest {
 
-    @EnumValidator(enumClass = FilterKeyReqInput.class, message = MessageConfig.FILTER_KEY_IS_INVALID)
+    @Schema(description = "The filter key you want to search (name, numberOfServings, type, instructions, ingredient)",example = "name")
+    @EnumValidator(enumClass = FilterKeyReqInput.class, message = RecipeValidationMessageConfig.FILTER_KEY_IS_INVALID)
     private String filterKey;
 
     private Object value;
@@ -29,16 +30,6 @@ public class SearchCriteriaRequest {
             "nc - doesn't contain, " +
             "eq - equals, " +
             "ne - not equals", example = "cn")
-    @EnumValidator(enumClass = SearchOperationReqInput.class, message = MessageConfig.SEARCH_OPTION_IS_NOT_VALID)
+    @EnumValidator(enumClass = SearchOperationReqInput.class, message = RecipeValidationMessageConfig.SEARCH_OPTION_IS_NOT_VALID)
     private String operation;
-
-    @Schema(hidden = true)
-    private String dataOption;
-
-
-    public SearchCriteriaRequest(String filterKey, Object value, String operation) {
-        this.filterKey=filterKey;
-        this.value=value;
-        this.operation=operation;
-    }
 }

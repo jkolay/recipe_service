@@ -1,8 +1,8 @@
 package com.abnamro.recipe.model.request;
 
 
-import com.abnamro.recipe.config.MessageConfig;
-import com.abnamro.recipe.model.enums.DataOptionReqInput;
+import com.abnamro.recipe.config.RecipeValidationMessageConfig;
+import com.abnamro.recipe.model.search.DataOptionReqInput;
 import com.abnamro.recipe.validator.EnumValidator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -25,7 +25,7 @@ public class RecipeSearchRequest {
     private List<SearchCriteriaRequest> searchCriteriaRequests;
 
     @Schema(description = "If you want all or just one criteria is enough for filter to work", example = "all")
-    @EnumValidator(enumClass = DataOptionReqInput.class, message = MessageConfig.DATA_OPTION_NOT_VALID)
+    @EnumValidator(enumClass = DataOptionReqInput.class, message = RecipeValidationMessageConfig.DATA_OPTION_NOT_VALID)
     private String dataOption;
 
 }
