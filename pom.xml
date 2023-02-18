@@ -89,7 +89,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.abnamro.recipe.AppApplication</mainClass>
+							<mainClass>com.abnamro.recipe.RecipeApplication</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
