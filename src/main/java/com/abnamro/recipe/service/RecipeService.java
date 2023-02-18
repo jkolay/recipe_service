@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -33,7 +34,6 @@ import java.util.Set;
 public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final IngredientService ingredientService;
-
     private final CommonConfigMapper commonConfigMapper;
 
 
@@ -75,12 +75,13 @@ public class RecipeService {
         RecipeDao existingRecipeDao = recipeRepository.findById(updateRecipeRequest.getId())
                 .orElseThrow(() -> new RecipeNotFoundException(RecipeValidationMessageConfig.RECIPE_IS_NOT_FOUND));
 
-        Set<IngredientDao> ingredientDaos =ingredientService.getIngredientsByIds(updateRecipeRequest.getIngredientIds());
+        Set<IngredientDao> ingredientDaos = Optional.ofNullable(updateRecipeRequest.getIngredientIds())
+                .map(ingredientService::getIngredientsByIds)
+                .orElse(null);
 
         RecipeDao recipeDao =commonConfigMapper.mapUpdateRecipeRequestToRecipe(updateRecipeRequest);
-        recipeDao.setRecipeIngredients(ingredientDaos);
         recipeDao.setUpdatedAt(LocalDateTime.now());
-        recipeDao.setCreatedAt(existingRecipeDao.getCreatedAt());
+        if (Optional.ofNullable(ingredientDaos).isPresent()) recipeDao.setRecipeIngredients(ingredientDaos);
 
         recipeRepository.save(recipeDao);
         return commonConfigMapper.mapRecipeToRecipeResponse(recipeDao);

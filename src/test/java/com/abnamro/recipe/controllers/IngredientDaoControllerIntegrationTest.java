@@ -1,3 +1,4 @@
+
 package com.abnamro.recipe.controllers;
 
 import com.abnamro.recipe.builder.IngredientTestDataBuilder;
@@ -6,16 +7,17 @@ import com.abnamro.recipe.model.request.CreateIngredientRequest;
 import com.abnamro.recipe.model.response.IngredientResponse;
 import com.abnamro.recipe.repositories.IngredientRepository;
 import com.abnamro.recipe.repositories.RecipeRepository;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -29,7 +31,7 @@ public class IngredientDaoControllerIntegrationTest extends AbstractControllerIn
     @Autowired
     protected MockMvc mockMvc;
 
-    @Before
+    @BeforeEach
     public void before() {
 
         recipeRepository.deleteAll();
@@ -110,3 +112,4 @@ public class IngredientDaoControllerIntegrationTest extends AbstractControllerIn
                 .andExpect(status().isNotFound());
     }
 }
+

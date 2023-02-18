@@ -1,11 +1,8 @@
 package com.abnamro.recipe.controllers;
 
-
-import com.abnamro.recipe.mapper.CommonConfigMapper;
 import com.abnamro.recipe.model.request.CreateIngredientRequest;
 import com.abnamro.recipe.model.response.IngredientResponse;
 import com.abnamro.recipe.service.IngredientService;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -18,24 +15,29 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-
 import java.util.List;
 
+/**
+ * This is the controller/api  class for Ingredients
+ */
 @RestController
 @RequestMapping(value = "api/v1/ingredient")
 public class IngredientController {
 
     private final Logger logger = LoggerFactory.getLogger(IngredientController.class);
-
     private final IngredientService ingredientService;
-    private final CommonConfigMapper commonConfigMapper;
 
     @Autowired
-    public IngredientController(IngredientService ingredientService, CommonConfigMapper commonConfigMapper) {
+    public IngredientController(IngredientService ingredientService) {
         this.ingredientService = ingredientService;
-        this.commonConfigMapper = commonConfigMapper;
     }
 
+    /**
+     * This endpoint helps to retrieve all the ingredients based on page and size
+     * @param page the page number
+     * @param size required record size in a page
+     * @return list of ingredients
+     */
     @Operation(description = "List all ingredients")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful request"),
@@ -47,6 +49,11 @@ public class IngredientController {
         return ingredientService.list(page, size);
     }
 
+    /**
+     * this end points helps to retrieve an ingredient
+     * @param id id of the ingredient which needs to be retrieved
+     * @return the ingredient
+     */
     @Operation(description = "List one ingredient by its ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful request"),
@@ -55,9 +62,14 @@ public class IngredientController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public IngredientResponse getIngredient(@Parameter(description = "Ingredient ID", required = true) @PathVariable(name = "id") Integer id) {
         logger.info("Getting the ingredient by its id. Id: {}", id);
-        return commonConfigMapper.mapIngredientToIngredientResponse(ingredientService.findById(id));
+        return ingredientService.getIngredient(id);
     }
 
+    /**
+     * this api helps to create ingredient in the sapplication
+     * @param request the ingredient request object
+     * @return the ingredient response after creation
+     */
     @Operation(description = "Create an ingredient")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Ingredient created"),
@@ -70,7 +82,28 @@ public class IngredientController {
         logger.info("Creating the ingredient with properties");
         return ingredientService.create(request);
     }
+    /**
+     * this api helps to create ingredient in the application
+     * @param requests the ingredient request objects
+     * @return the ingredient responses after creation
+     */
+    @Operation(description = "Create list of ingredient")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Ingredient created"),
+            @ApiResponse(responseCode = "400", description = "Bad input")
+    })
+    @RequestMapping(value = "/list",method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.CREATED)
+    public List<IngredientResponse> createIngredients(
+            @Parameter(description = "Properties of the Ingredient", required = true) @Valid @RequestBody List<CreateIngredientRequest> requests) {
+        logger.info("Creating the ingredient with properties");
+        return ingredientService.createIngredients(requests);
+    }
 
+    /**
+     * this api deletes an ingredient
+     * @param id the id of the ingredient which need sto be deleted
+     */
     @Operation(description = "Delete the ingredient")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation"),

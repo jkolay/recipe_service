@@ -1,5 +1,8 @@
 package com.abnamro.recipe.config;
 
+/**
+ * This class contains the Validation related length,patterns
+ */
 public class ValidationConstant {
 
     /**

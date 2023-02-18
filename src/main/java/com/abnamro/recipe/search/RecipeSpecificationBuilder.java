@@ -28,7 +28,7 @@ public class RecipeSpecificationBuilder {
 
     public Optional<Specification<RecipeDao>> build() {
         if (params.size() == 0) {
-            return null;
+            return Optional.empty();
         }
         Specification<RecipeDao> result = new RecipeSpecification(params.get(0));
         for (int idx = 1; idx < params.size(); idx++) {

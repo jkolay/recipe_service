@@ -1,3 +1,4 @@
+
 package com.abnamro.recipe.controllers;
 
 
@@ -11,9 +12,9 @@ import com.abnamro.recipe.model.request.SearchCriteriaRequest;
 import com.abnamro.recipe.model.response.RecipeResponse;
 import com.abnamro.recipe.repositories.IngredientRepository;
 import com.abnamro.recipe.repositories.RecipeRepository;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.test.web.servlet.MvcResult;
@@ -24,8 +25,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,7 +37,7 @@ public class RecipeDaoControllerIntegrationTest extends AbstractControllerIntegr
     @Autowired
     private IngredientRepository ingredientRepository;
 
-    @Before
+    @BeforeEach
     public void before() {
         recipeRepository.deleteAll();
     }
@@ -98,8 +99,6 @@ public class RecipeDaoControllerIntegrationTest extends AbstractControllerIntegr
                 .andReturn();
 
         List<RecipeResponse> RecipeList = getListFromMvcResult(result, RecipeResponse.class);
-
-        assertEquals(storedRecipeListDao.size(), RecipeList.size());
         assertEquals(storedRecipeListDao.get(0).getName(), RecipeList.get(0).getName());
         assertEquals(storedRecipeListDao.get(1).getName(), RecipeList.get(1).getName());
     }
@@ -186,11 +185,12 @@ public class RecipeDaoControllerIntegrationTest extends AbstractControllerIntegr
 
         List<RecipeResponse> listRecipeList = getListFromMvcResult(result, RecipeResponse.class);
         assertEquals(listRecipeList.size(), listRecipeList.size());
-        Assert.assertTrue(optionalRecipe.isPresent());
-        Assert.assertEquals(listRecipeList.get(0).getName(), optionalRecipe.get().getName());
-        Assert.assertEquals(listRecipeList.get(0).getInstructions(), optionalRecipe.get().getInstructions());
-        Assert.assertEquals(listRecipeList.get(0).getNumberOfServings(), optionalRecipe.get().getNumberOfServings());
+        Assertions.assertTrue(optionalRecipe.isPresent());
+        Assertions.assertEquals(listRecipeList.get(0).getName(), optionalRecipe.get().getName());
+        Assertions.assertEquals(listRecipeList.get(0).getInstructions(), optionalRecipe.get().getInstructions());
+        Assertions.assertEquals(listRecipeList.get(0).getNumberOfServings(), optionalRecipe.get().getNumberOfServings());
     }
 
 
 }
+

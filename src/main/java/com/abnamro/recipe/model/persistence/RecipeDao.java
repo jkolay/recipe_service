@@ -30,7 +30,7 @@ public class RecipeDao {
     private Integer id;
 
     @NotBlank
-    @Column
+    @Column(nullable = false)
     private String name;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})

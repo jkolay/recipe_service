@@ -34,7 +34,7 @@ public class IngredientDao {
     private Integer id;
 
     @NotBlank
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String ingredient;
 
     @ManyToMany(mappedBy = DatabaseConstant.JOINED_TABLE_NAME, cascade = {CascadeType.MERGE, CascadeType.PERSIST})

@@ -1,14 +1,15 @@
 package com.abnamro.recipe.search;
 
 import com.abnamro.recipe.model.constant.DatabaseConstant;
-import com.abnamro.recipe.model.persistence.IngredientDao;
 import com.abnamro.recipe.model.persistence.RecipeDao;
 import com.abnamro.recipe.model.search.SearchCriteria;
 import com.abnamro.recipe.model.search.SearchOperation;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;
+import java.util.List;
 import java.util.Objects;
+
 
 public class RecipeSpecification implements Specification<RecipeDao> {
     private final SearchCriteria searchCriteria;
@@ -53,7 +54,7 @@ public class RecipeSpecification implements Specification<RecipeDao> {
         return null;
     }
 
-    private Join<RecipeDao, IngredientDao> ingredientJoin(Root<RecipeDao> root) {
+    private Join<Object, Object> ingredientJoin(Root<RecipeDao> root) {
         return root.join(DatabaseConstant.JOINED_TABLE_NAME, JoinType.INNER);
     }
 }

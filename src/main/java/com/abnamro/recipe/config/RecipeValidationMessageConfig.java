@@ -1,6 +1,8 @@
 package com.abnamro.recipe.config;
 
-
+/**
+ * This class defines all validation error messages
+ */
 public class RecipeValidationMessageConfig {
     public static final String ID_NOT_NULL = "Please provide a valid ID.";
     public static final String INGREDIENT_SIZE_NOT_VALID = "Name can be 100 characters long at maximum.";

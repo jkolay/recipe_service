@@ -48,7 +48,7 @@ public class IngredientService {
                 .collect(Collectors.toSet());
     }
 
-    public IngredientDao findById(int id) {
+    private IngredientDao findById(int id) {
         return ingredientRepository.findById(id)
                 .orElseThrow(() -> new RecipeNotFoundException(RecipeValidationMessageConfig.INGREDIENT_IS_NOT_AVAILABLE + id));
     }
@@ -66,5 +66,13 @@ public class IngredientService {
             throw new RecipeNotFoundException();
         }
         ingredientRepository.deleteById(id);
+    }
+
+    public IngredientResponse getIngredient(Integer id) {
+        return commonConfigMapper.mapIngredientToIngredientResponse(findById(id));
+    }
+
+    public List<IngredientResponse> createIngredients(List<CreateIngredientRequest> requests) {
+        return requests.stream().map(ingredient->create(ingredient)).collect(Collectors.toList());
     }
 }
