@@ -57,14 +57,8 @@ public class AbstractControllerIntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON));
     }
 
-    protected ResultActions performPatch(String path, Object request) throws Exception {
-        return mockMvc.perform(patch(path)
-                .content(toJson(request))
-                .contentType(MediaType.APPLICATION_JSON));
-    }
-
-    protected ResultActions performDelete(String path, Object request) throws Exception {
-        return mockMvc.perform(delete(path)
+    protected ResultActions performPut(String path, Object request) throws Exception {
+        return mockMvc.perform(put(path)
                 .content(toJson(request))
                 .contentType(MediaType.APPLICATION_JSON));
     }

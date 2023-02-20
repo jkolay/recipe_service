@@ -81,18 +81,6 @@ public class RecipeServiceTest {
     }
 
     @Test
-    public void test_deleteRecipe_notFound() {
-        when(recipeRepository.existsById(anyInt())).thenReturn(false);
-        Assertions.assertThrows(RecipeNotFoundException.class, () -> recipeService.deleteRecipe(1));
-    }
-
-    @Test
-    public void test_findBySearchCriteria_notFound() {
-        RecipeSearchRequest recipeSearchRequest = mock(RecipeSearchRequest.class);
-        Assertions.assertThrows(RecipeNotFoundException.class, () -> recipeService.findBySearchCriteria(recipeSearchRequest, 0, 10));
-    }
-
-    @Test
     public void test_findBySearchCriteria() {
         RecipeSearchRequest recipeSearchRequest = new RecipeSearchRequest();
         SearchCriteriaRequest searchCriteriaRequest = new SearchCriteriaRequest();

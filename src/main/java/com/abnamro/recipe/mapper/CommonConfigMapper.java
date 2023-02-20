@@ -15,6 +15,9 @@ import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
+/**
+ * This is a mapper interface which generates the model to dao class mapping implementation and dao to response class implementation at runtime
+ */
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
 public interface CommonConfigMapper {
     @Mapping(target = "ingredient", source = "name")
@@ -27,8 +30,6 @@ public interface CommonConfigMapper {
     RecipeResponse mapRecipeToRecipeResponse(RecipeDao recipeDao);
 
     List<RecipeResponse> mapRecipesToRecipeResponses(List<RecipeDao> recipeList);
-
-
     RecipeDao mapUpdateRecipeRequestToRecipe(UpdateRecipeRequest updateRecipeRequest);
 
     List<SearchCriteria> mapSearchCriteriaRequestsToSearchCriterias(List<SearchCriteriaRequest> criteriaRequest);

@@ -87,7 +87,7 @@ public class RecipeController {
      */
     @Operation(description = "Update the recipe")
     @ApiResponses(value = {@ApiResponse(responseCode = "201", description = "Ingredient created"), @ApiResponse(responseCode = "400", description = "Bad input")})
-    @RequestMapping(method = RequestMethod.PATCH)
+    @RequestMapping(method = RequestMethod.PUT)
     public void updateRecipe(@Parameter(description = "Properties of the recipe", required = true) @Valid @RequestBody UpdateRecipeRequest updateRecipeRequest) {
         logger.info("Updating the recipe by given properties");
         recipeService.updateRecipe(updateRecipeRequest);

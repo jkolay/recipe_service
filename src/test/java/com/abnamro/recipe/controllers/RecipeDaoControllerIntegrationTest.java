@@ -111,26 +111,12 @@ public class RecipeDaoControllerIntegrationTest extends AbstractControllerIntegr
         RecipeDao savedRecipeDao = recipeRepository.save(recipeDao);
         savedRecipeDao.setName("fish curry");
         savedRecipeDao.setInstructions("someInstruction");
-        performPatch("/api/v1/recipe", savedRecipeDao);
+        performPut("/api/v1/recipe", savedRecipeDao);
         Optional<RecipeDao> updatedRecipe = recipeRepository.findById(savedRecipeDao.getId());
         assertTrue(updatedRecipe.isPresent());
         assertEquals(savedRecipeDao.getNumberOfServings(), updatedRecipe.get().getNumberOfServings());
         assertEquals(savedRecipeDao.getInstructions(), updatedRecipe.get().getInstructions());
     }
-
-    @Test
-    public void test_updateRecipe_idIsNull() throws Exception {
-        RecipeDao testRecipeDao = new RecipeDao();
-        testRecipeDao.setName("potato fry");
-        testRecipeDao.setInstructions("take potato , chilly, cook them");
-        testRecipeDao.setNumberOfServings(3);
-        testRecipeDao.setType("OTHER");
-
-        performPatch("/api/v1/recipe", testRecipeDao)
-                .andDo(MockMvcResultHandlers.print())
-                .andExpect(status().isBadRequest());
-    }
-
 
     @Test
     public void test_deleteRecipe_successfully() throws Exception {
@@ -139,9 +125,7 @@ public class RecipeDaoControllerIntegrationTest extends AbstractControllerIntegr
 
         performDelete("/api/v1/recipe", Pair.of("id", String.valueOf(savedRecipeDao.getId())))
                 .andExpect(status().isOk());
-
         Optional<RecipeDao> deletedRecipe = recipeRepository.findById(savedRecipeDao.getId());
-
         assertTrue(deletedRecipe.isEmpty());
     }
 

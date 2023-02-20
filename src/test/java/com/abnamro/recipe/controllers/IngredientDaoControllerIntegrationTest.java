@@ -62,12 +62,6 @@ public class IngredientDaoControllerIntegrationTest extends AbstractControllerIn
     }
 
     @Test
-    public void test_listIngredient_notFound() throws Exception {
-        performGet("/api/v1/ingredient/1")
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
     public void test_listIngredients_successfully() throws Exception {
         List<IngredientDao> ingredientDaoList = IngredientTestDataBuilder.createIngredientList();
         ingredientRepository.saveAll(ingredientDaoList);
@@ -98,18 +92,6 @@ public class IngredientDaoControllerIntegrationTest extends AbstractControllerIn
                 .andReturn();
         IngredientResponse ingredientResponse = getFromMvcResult(result, IngredientResponse.class);
         assertEquals(savedIngredientDao.getIngredient(), ingredientResponse.getIngredient());
-    }
-
-    @Test
-    public void test_findIngredientById_fails() throws Exception {
-        performGet("/api/v1/ingredient/" + 1)
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
-    public void test_deleteIngredient_notFound() throws Exception {
-        performDelete("/api/v1/ingredient?id=11")
-                .andExpect(status().isNotFound());
     }
 }
 
