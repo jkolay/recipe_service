@@ -9,6 +9,8 @@ import com.abnamro.recipe.model.persistence.IngredientDao;
 import com.abnamro.recipe.model.request.CreateIngredientRequest;
 import com.abnamro.recipe.model.response.IngredientResponse;
 import com.abnamro.recipe.repositories.IngredientRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,8 @@ public class IngredientService {
     private final IngredientRepository ingredientRepository;
     private final CommonConfigMapper commonConfigMapper;
 
+    private final Logger logger = LoggerFactory.getLogger(IngredientService.class);
+
     public IngredientService(IngredientRepository ingredientRepository, CommonConfigMapper commonConfigMapper) {
         this.ingredientRepository = ingredientRepository;
         this.commonConfigMapper = commonConfigMapper;
@@ -32,12 +36,14 @@ public class IngredientService {
 
     public IngredientResponse create(CreateIngredientRequest request) {
         if(ingredientRepository.findByIngredientEqualsIgnoreCase(request.getName())!=null){
+            logger.error("Ingredient is already present in the application");
             throw new IngredientDuplicationException(RecipeValidationMessageConfig.INGREDIENT_ALREADY_EXISTS);
         }
         IngredientDao ingredientDao = commonConfigMapper.mapCreateIngredientRequestToIngredient(request);
         ingredientDao.setCreatedAt(LocalDateTime.now());
         ingredientDao.setUpdatedAt(LocalDateTime.now());
         ingredientDao = ingredientRepository.save(ingredientDao);
+        logger.info("Created ingredient successfully ");
         return commonConfigMapper.mapIngredientToIngredientResponse(ingredientDao);
     }
 
@@ -63,7 +69,8 @@ public class IngredientService {
 
     public void delete(int id) {
         if (!ingredientRepository.existsById(id)) {
-            throw new RecipeNotFoundException();
+            logger.error("Ingredient is not found ");
+            throw new RecipeNotFoundException(RecipeValidationMessageConfig.INGREDIENT_IS_NOT_AVAILABLE);
         }
         ingredientRepository.deleteById(id);
     }

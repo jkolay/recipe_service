@@ -51,8 +51,13 @@ Feature	Software Module Used
 3. Build project
 
   ```
-  $ mvn clean install
+  $ mvn clean package 
   ```
+  To build by skipping unit tests run maven command 
+ ```
+  $ mvn clean package -DskipTests= true
+  ```
+
 
 On successfull build completion, one should have web service jar in target directory named as
 ```

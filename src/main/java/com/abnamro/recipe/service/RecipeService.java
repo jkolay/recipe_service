@@ -15,6 +15,8 @@ import com.abnamro.recipe.model.response.RecipeResponse;
 import com.abnamro.recipe.model.search.SearchCriteria;
 import com.abnamro.recipe.repositories.RecipeRepository;
 import com.abnamro.recipe.search.RecipeSpecificationBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,6 +37,7 @@ public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final IngredientService ingredientService;
     private final CommonConfigMapper commonConfigMapper;
+    private final Logger logger = LoggerFactory.getLogger(RecipeService.class);
 
 
     @Autowired
@@ -48,6 +51,7 @@ public class RecipeService {
     public RecipeResponse createRecipe(CreateRecipeRequest createRecipeRequest) {
         RecipeDao existingRecipeDao = recipeRepository.findByNameEqualsIgnoreCase(createRecipeRequest.getName());
         if(existingRecipeDao !=null){
+            logger.error("Recipe is already available in the application");
             throw new IngredientDuplicationException(RecipeValidationMessageConfig.RECIPE_ALREADY_EXISTS+ existingRecipeDao.getId());
         }
         Set<IngredientDao> ingredientDaos =ingredientService.getIngredientsByIds(createRecipeRequest.getIngredientIds());
@@ -56,7 +60,7 @@ public class RecipeService {
         recipeDao.setCreatedAt(LocalDateTime.now());
         recipeDao.setUpdatedAt(LocalDateTime.now());
         RecipeDao createdRecipeDao = recipeRepository.save(recipeDao);
-
+        logger.info("Recipe is created successfully");
         return commonConfigMapper.mapRecipeToRecipeResponse(createdRecipeDao);
     }
 
@@ -89,6 +93,7 @@ public class RecipeService {
 
     public void deleteRecipe(int id) {
         if (!recipeRepository.existsById(id)) {
+            logger.error("Recipe is not present in the database");
             throw new RecipeNotFoundException(RecipeValidationMessageConfig.RECIPE_IS_NOT_FOUND);
         }
 
@@ -105,6 +110,7 @@ public class RecipeService {
     private Specification<RecipeDao> createRecipeSpecificationForSearch(RecipeSearchRequest recipeSearchRequest) {
         List<SearchCriteriaRequest> criteriaRequestList = recipeSearchRequest.getSearchCriteriaRequests();
         if(criteriaRequestList.isEmpty()){
+            logger.error("Filter is not provided the the request");
             throw new RecipeNotFoundException(RecipeValidationMessageConfig.FILTER_IS_NOT_PROVIDED);
         }
         List<SearchCriteria> criteriaList=commonConfigMapper.mapSearchCriteriaRequestsToSearchCriterias(criteriaRequestList);
