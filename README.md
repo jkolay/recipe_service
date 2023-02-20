@@ -74,7 +74,7 @@ Command to execute:
 ### Swagger URL
 
 ```text
-http://localhost:8080/swagger-ui/index.html/
+http://localhost:8080/swagger-ui/index.html
 ```
 
 ### Database components
