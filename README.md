@@ -273,6 +273,9 @@ Response
  ```
   200 OK
   ```
+### Future Enhancements
+- Integrate Web Service with Authorisation for secure access of the api
+- Design and Implementation of Multi Factor Authentication feature
 
 
 
