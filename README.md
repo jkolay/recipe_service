@@ -229,7 +229,7 @@ Response
   ```
 #### 5. Search recipe/recipes
 This below end point will search list of recipes from db based on filters, page number and number of records need to fetched in a page
-##### #### POST (http://localhost:8080/api/v1/recipe/search?page=0&size=10)
+##### POST (http://localhost:8080/api/v1/recipe/search?page=0&size=10)
 JSON Schema
   ```
   {
