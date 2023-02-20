@@ -24,7 +24,10 @@ This layer contains recipe entity classes and JPA repositories which implement l
 Bottom most layer, responsible for physically storing the recipes data onto database table.
 Table - recipes,ingredients,recipe_ingredient are used to store the recipes data for the service
 For development and testing purposes, the Embedded H2 Database provided by Spring Boot framework is also utilized
-![recipe-api-flow](https://user-images.githubusercontent.com/65228852/220131474-e857d643-4a68-4350-8a51-7edfe97abc3b.jpg)
+
+
+![recipe_api_flow](https://user-images.githubusercontent.com/65228852/220139098-0383c289-352a-4053-9039-74658063e5ea.jpg)
+
 
 ----------------------------------------- 
 
