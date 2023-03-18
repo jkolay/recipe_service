@@ -4,25 +4,19 @@ import com.abnamro.recipe.exception.RecipeNotFoundException;
 import com.abnamro.recipe.mapper.CommonConfigMapper;
 import com.abnamro.recipe.model.persistence.RecipeDao;
 import com.abnamro.recipe.model.request.CreateRecipeRequest;
-import com.abnamro.recipe.model.request.RecipeSearchRequest;
-import com.abnamro.recipe.model.request.SearchCriteriaRequest;
 import com.abnamro.recipe.model.request.UpdateRecipeRequest;
 import com.abnamro.recipe.model.response.RecipeResponse;
-import com.abnamro.recipe.model.search.SearchCriteria;
 import com.abnamro.recipe.repositories.RecipeRepository;
 import com.abnamro.recipe.service.IngredientService;
 import com.abnamro.recipe.service.RecipeService;
+import com.abnamro.recipe.service.impl.IngredientServiceImpl;
+import com.abnamro.recipe.service.impl.RecipeServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -35,13 +29,13 @@ public class RecipeServiceTest {
     private RecipeRepository recipeRepository;
 
     @Mock
-    private IngredientService ingredientService;
+    private IngredientServiceImpl ingredientService;
 
     @Mock
     private CommonConfigMapper commonConfigMapper;
 
     @InjectMocks
-    private RecipeService recipeService;
+    private RecipeServiceImpl recipeService;
 
     @Test
     public void test_createRecipe_successfully() {
@@ -80,30 +74,6 @@ public class RecipeServiceTest {
         recipeService.deleteRecipe(1);
     }
 
-    @Test
-    public void test_findBySearchCriteria() {
-        RecipeSearchRequest recipeSearchRequest = new RecipeSearchRequest();
-        SearchCriteriaRequest searchCriteriaRequest = new SearchCriteriaRequest();
-        searchCriteriaRequest.setFilterKey("type");
-        searchCriteriaRequest.setOperation("eq");
-        searchCriteriaRequest.setValue("VEGETARIAN");
-        List<SearchCriteriaRequest> searchCriteriaRequests = new ArrayList<>();
-        searchCriteriaRequests.add(searchCriteriaRequest);
-        recipeSearchRequest.setSearchCriteriaRequests(searchCriteriaRequests);
-        recipeSearchRequest.setDataOption("ALL");
-        Page<RecipeDao> filteredRecipes = mock(Page.class);
-        List<SearchCriteria> criteriaList = new ArrayList<>();
-        SearchCriteria searchCriteria = new SearchCriteria();
-        searchCriteria.setFilterKey("type");
-        searchCriteria.setOperation("eq");
-        searchCriteria.setValue("VEGETARIAN");
-        criteriaList.add(searchCriteria);
-        ArgumentCaptor<Specification> specificationsCaptor = ArgumentCaptor.forClass(Specification.class);
-        BDDMockito.given(recipeRepository.findAll(specificationsCaptor.capture(), Mockito.any(Pageable.class))).willReturn(filteredRecipes);
-        when(filteredRecipes.getContent()).thenReturn(new ArrayList<>());
-        when(commonConfigMapper.mapSearchCriteriaRequestsToSearchCriterias(Mockito.anyList())).thenReturn(criteriaList);
-        when(commonConfigMapper.mapRecipesToRecipeResponses(Mockito.anyList())).thenReturn(new ArrayList<>());
-        Assertions.assertNotNull(recipeService.findBySearchCriteria(recipeSearchRequest, 0, 10));
-    }
+
 
 }

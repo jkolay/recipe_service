@@ -1,7 +1,9 @@
 package com.abnamro.recipe.validator;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +23,12 @@ public class EnumValidatorConstraint implements ConstraintValidator<EnumValidato
     }
 
     @Override
-    public boolean isValid(String value, ConstraintValidatorContext context) {
+    public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
         if (value == null) {
             return true;
         }
         return acceptedValues.contains(value.toUpperCase());
     }
+
+
 }

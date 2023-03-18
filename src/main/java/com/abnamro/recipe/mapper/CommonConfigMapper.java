@@ -4,11 +4,9 @@ import com.abnamro.recipe.model.persistence.IngredientDao;
 import com.abnamro.recipe.model.persistence.RecipeDao;
 import com.abnamro.recipe.model.request.CreateIngredientRequest;
 import com.abnamro.recipe.model.request.CreateRecipeRequest;
-import com.abnamro.recipe.model.request.SearchCriteriaRequest;
 import com.abnamro.recipe.model.request.UpdateRecipeRequest;
 import com.abnamro.recipe.model.response.IngredientResponse;
 import com.abnamro.recipe.model.response.RecipeResponse;
-import com.abnamro.recipe.model.search.SearchCriteria;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -32,5 +30,4 @@ public interface CommonConfigMapper {
     List<RecipeResponse> mapRecipesToRecipeResponses(List<RecipeDao> recipeList);
     RecipeDao mapUpdateRecipeRequestToRecipe(UpdateRecipeRequest updateRecipeRequest);
 
-    List<SearchCriteria> mapSearchCriteriaRequestsToSearchCriterias(List<SearchCriteriaRequest> criteriaRequest);
 }

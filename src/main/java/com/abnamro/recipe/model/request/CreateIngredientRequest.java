@@ -3,14 +3,15 @@ package com.abnamro.recipe.model.request;
 import com.abnamro.recipe.config.RecipeValidationMessageConfig;
 import com.abnamro.recipe.config.ValidationConstant;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+
 
 @Getter
 @Setter

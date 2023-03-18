@@ -6,10 +6,12 @@ import com.abnamro.recipe.config.RecipeValidationMessageConfig;
 import com.abnamro.recipe.model.error.ErrorSeverityLevelCodeType;
 import com.abnamro.recipe.model.error.RecipeErrorModel;
 import com.abnamro.recipe.model.error.RecipeRequestErrorModel;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.validation.FieldError;
@@ -22,7 +24,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.web.util.WebUtils;
 
-import javax.validation.ConstraintViolationException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +36,7 @@ import java.util.Map;
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
-    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleExceptionInternal(Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         if (HttpStatus.INTERNAL_SERVER_ERROR.equals(status)) {
             request.setAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE, ex, WebRequest.SCOPE_REQUEST);
         }
@@ -43,7 +45,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
@@ -60,6 +62,13 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseBody
     public ResponseEntity<Object> handleNotFoundException(RecipeNotFoundException ex) {
         HttpStatus status = ex.getStatus() == null ? HttpStatus.NOT_FOUND : ex.getStatus();
+        final RecipeErrorModel error = new RecipeErrorModel(ex.getMessage(), RecipeErrorCodeConfig.INVALID_INPUT, ErrorSeverityLevelCodeType.ERROR);
+        return new ResponseEntity<>(error, status);
+    }
+    @ExceptionHandler(UserException.class)
+    @ResponseBody
+    public ResponseEntity<Object> handleUserException(UserException ex) {
+        HttpStatus status = ex.getStatus() == null ? HttpStatus.BAD_REQUEST : ex.getStatus();
         final RecipeErrorModel error = new RecipeErrorModel(ex.getMessage(), RecipeErrorCodeConfig.INVALID_INPUT, ErrorSeverityLevelCodeType.ERROR);
         return new ResponseEntity<>(error, status);
     }
@@ -112,6 +121,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     @ResponseBody
     public ResponseEntity<Object> handleRuntimeException(RuntimeException ex) {
+        ex.printStackTrace();
         final RecipeErrorModel error = new RecipeErrorModel(ex.getMessage(), RecipeErrorCodeConfig.INTERNAL_ERROR, ErrorSeverityLevelCodeType.ERROR);
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }

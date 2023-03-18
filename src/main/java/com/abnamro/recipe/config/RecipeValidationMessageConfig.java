@@ -28,4 +28,12 @@ public class RecipeValidationMessageConfig {
     public static final String FILTER_IS_NOT_PROVIDED = "Filter is not provided for search";
     public static final String DB_CONSTRAINT_VIOLATED = "Database constraint violated.";
     public static final String INGREDIENT_LIST_CANNOT_BE_EMPTY = "Ingredient list can not be null";
+
+    public static final String USER_NAME_NOT_NULL = "User Name can not be blank";
+    public static final String EMAIL_NOT_NULL = "Email can not be blank";
+    public static final String MOBILE_NOT_NULL = "mobile number can not be blank";
+    public static final String PASSWORD_NOT_NULL = "password can not be blank";
+    public static final String ROLE_NOT_NULL = "Role can not be blank";
+    public static final String RECIPE_TYPE_IS_NOT_FOUND = "Recipe type is not available";
+    public static final String INVALID_USER_ROLE = "invalid user role. Role can be either Admin or Customer";
 }

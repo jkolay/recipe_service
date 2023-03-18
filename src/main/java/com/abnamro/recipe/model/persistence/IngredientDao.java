@@ -1,9 +1,11 @@
 package com.abnamro.recipe.model.persistence;
 
 import com.abnamro.recipe.model.constant.DatabaseConstant;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,8 +17,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -37,9 +38,12 @@ public class IngredientDao {
     @Column(nullable = false)
     private String ingredient;
 
-    @ManyToMany(mappedBy = DatabaseConstant.JOINED_TABLE_NAME, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JsonIgnoreProperties(DatabaseConstant.JOINED_TABLE_NAME)
-    private Set<RecipeDao> recipeDaoIngredients;
+  @ManyToMany(
+      mappedBy = DatabaseConstant.JOINED_TABLE_NAME,
+      cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+  @JsonIgnoreProperties(DatabaseConstant.JOINED_TABLE_NAME)
+  @JsonIgnore
+  private Set<RecipeDao> recipeDaoIngredients;
 
     @Column(updatable = false)
     @CreationTimestamp

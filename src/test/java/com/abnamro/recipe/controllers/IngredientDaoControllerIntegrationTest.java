@@ -56,7 +56,7 @@ public class IngredientDaoControllerIntegrationTest extends AbstractControllerIn
         IngredientDao ingredientDao = IngredientTestDataBuilder.createIngredient();
         IngredientDao savedIngredientDao = ingredientRepository.save(ingredientDao);
         performGet("/api/v1/ingredient/" + savedIngredientDao.getId())
-                .andExpect(status().isOk())
+                .andExpect(status().isFound())
                 .andExpect(jsonPath("$.id").value(savedIngredientDao.getId()))
                 .andExpect(jsonPath("$.ingredient").value(ingredientDao.getIngredient()));
     }
@@ -66,7 +66,7 @@ public class IngredientDaoControllerIntegrationTest extends AbstractControllerIn
         List<IngredientDao> ingredientDaoList = IngredientTestDataBuilder.createIngredientList();
         ingredientRepository.saveAll(ingredientDaoList);
         MvcResult result = performGet("/api/v1/ingredient/page/0/size/10")
-                .andExpect(status().isOk())
+                .andExpect(status().isFound())
                 .andReturn();
         List<IngredientResponse> responses = getListFromMvcResult(result, IngredientResponse.class);
         assertEquals(ingredientDaoList.size(), responses.size());
@@ -86,7 +86,7 @@ public class IngredientDaoControllerIntegrationTest extends AbstractControllerIn
         IngredientDao ingredientDao = IngredientTestDataBuilder.createIngredient();
         IngredientDao savedIngredientDao = ingredientRepository.save(ingredientDao);
         MvcResult result = performGet("/api/v1/ingredient/" + savedIngredientDao.getId())
-                .andExpect(status().isOk())
+                .andExpect(status().isFound())
                 .andExpect(jsonPath("$.id").value(savedIngredientDao.getId()))
                 .andExpect(jsonPath("$.ingredient").value(savedIngredientDao.getIngredient()))
                 .andReturn();

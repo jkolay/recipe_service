@@ -236,46 +236,7 @@ Response
     "updatedAt": "2023-02-20T13:02:19.528766"
 }]
   ```
-#### 5. Search recipe/recipes
-This below end point will search list of recipes from db based on filters, page number and number of records need to fetched in a page
-##### POST (http://localhost:8080/api/v1/recipe/search?page=0&size=10)
-JSON Schema
-  ```
-  {
-  "dataOption": "all",
-  "criteria": [
-      {
-      "filterKey": "numberOfServings",
-      "value": 5,
-      "operation": "eq"
-    },
-    {
-      "filterKey": "ingredient",
-      "value": "potato",
-      "operation": "eq"
-    }
-    ]
- }
- ```
-Response
- ```
-  [{
-    "id": 1,
-    "name": "Potato Mash",
-    "recipeIngredients": [
-        {
-            "id": 1,
-            "ingredient": "potato"
-        }
-    ],
-    "instructions": "fry potato,onion,tomato and boil with water ",
-    "type": "Other",
-    "numberOfServings": 5,
-    "createdAt": "2023-02-20T13:02:19.515707",
-    "updatedAt": "2023-02-20T13:02:19.516386"
- }]
-  ```
-#### 6. Delete a  recipe
+#### 5. Delete a  recipe
 This below end point will delete a recipe based on the id provided in url
 ##### ### DELETE (http://localhost:8080/api/v1/recipe/{recipeid})
 Response

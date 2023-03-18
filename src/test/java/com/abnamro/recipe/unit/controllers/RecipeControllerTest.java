@@ -2,7 +2,6 @@ package com.abnamro.recipe.unit.controllers;
 
 import com.abnamro.recipe.controllers.RecipeController;
 import com.abnamro.recipe.model.request.CreateRecipeRequest;
-import com.abnamro.recipe.model.request.RecipeSearchRequest;
 import com.abnamro.recipe.model.request.UpdateRecipeRequest;
 import com.abnamro.recipe.model.response.RecipeResponse;
 import com.abnamro.recipe.service.RecipeService;
@@ -10,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
@@ -54,8 +52,7 @@ public class RecipeControllerTest {
         List<RecipeResponse> recipeResponses = new ArrayList<>();
         recipeResponses.add(recipe);
         when(recipeService.getRecipeList(anyInt(), anyInt())).thenReturn(recipeResponses);
-        List<RecipeResponse> recipeList = recipeController.getRecipeList(anyInt(), anyInt());
-        assertNotNull(recipeList);
+        assertNotNull(recipeController.getRecipeList(anyInt(), anyInt()));
     }
 
     @Test
@@ -75,17 +72,4 @@ public class RecipeControllerTest {
         recipeController.deleteRecipe(5);
     }
 
-    @Test
-    public void test_searchRecipe_successfully(){
-        RecipeResponse recipe = new RecipeResponse();
-        recipe.setName("name1");
-        recipe.setType("OTHER");
-        recipe.setInstructions("ins");
-        List<RecipeResponse> recipeResponses = new ArrayList<>();
-        recipeResponses.add(recipe);
-
-        when(recipeService.findBySearchCriteria(Mockito.any(RecipeSearchRequest.class), Mockito.anyInt(), Mockito.anyInt())).thenReturn(recipeResponses);
-        assertNotNull(recipeController.searchRecipe(0,0,new RecipeSearchRequest()));
-
-    }
 }

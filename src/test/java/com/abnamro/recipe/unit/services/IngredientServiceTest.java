@@ -8,6 +8,7 @@ import com.abnamro.recipe.model.request.CreateIngredientRequest;
 import com.abnamro.recipe.model.response.IngredientResponse;
 import com.abnamro.recipe.repositories.IngredientRepository;
 import com.abnamro.recipe.service.IngredientService;
+import com.abnamro.recipe.service.impl.IngredientServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -35,7 +36,7 @@ public class IngredientServiceTest {
     private CommonConfigMapper commonConfigMapper;
 
     @InjectMocks
-    private IngredientService ingredientService;
+    private IngredientServiceImpl ingredientService;
 
     @Test
     public void test_createIngredient_successfully() {

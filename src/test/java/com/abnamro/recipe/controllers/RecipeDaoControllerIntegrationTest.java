@@ -7,18 +7,14 @@ import com.abnamro.recipe.builder.RecipeTestDataBuilder;
 import com.abnamro.recipe.model.persistence.IngredientDao;
 import com.abnamro.recipe.model.persistence.RecipeDao;
 import com.abnamro.recipe.model.request.CreateRecipeRequest;
-import com.abnamro.recipe.model.request.RecipeSearchRequest;
-import com.abnamro.recipe.model.request.SearchCriteriaRequest;
 import com.abnamro.recipe.model.response.RecipeResponse;
 import com.abnamro.recipe.repositories.IngredientRepository;
 import com.abnamro.recipe.repositories.RecipeRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.util.Pair;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +62,7 @@ public class RecipeDaoControllerIntegrationTest extends AbstractControllerIntegr
         RecipeDao savedRecipeDao = recipeRepository.save(RecipeDao);
 
         performGet("/api/v1/recipe/" + savedRecipeDao.getId())
-                .andExpect(status().isOk())
+                .andExpect(status().isFound())
                 .andExpect(jsonPath("$.id").value(savedRecipeDao.getId()))
                 .andExpect(jsonPath("$.name").value(savedRecipeDao.getName()))
                 .andExpect(jsonPath("$.instructions").value(savedRecipeDao.getInstructions()))
@@ -95,7 +91,7 @@ public class RecipeDaoControllerIntegrationTest extends AbstractControllerIntegr
         recipeRepository.saveAll(storedRecipeListDao);
 
         MvcResult result = performGet("/api/v1/recipe/page/0/size/10")
-                .andExpect(status().isOk())
+                .andExpect(status().isFound())
                 .andReturn();
 
         List<RecipeResponse> RecipeList = getListFromMvcResult(result, RecipeResponse.class);
@@ -131,49 +127,6 @@ public class RecipeDaoControllerIntegrationTest extends AbstractControllerIntegr
 
 
 
-    @Test
-    public void test_SearchRecipeByCriteria_successfully() throws Exception {
-        //create ingredient for recipe
-        IngredientDao ingredientDao = IngredientTestDataBuilder.createIngredientWithNameParam("milk");
-        IngredientDao savedIngredientDao = ingredientRepository.save(ingredientDao);
-
-        //create the recipe
-        CreateRecipeRequest createRecipeRequest = new CreateRecipeRequest("pudding",
-                "OTHER", 5, List.of(savedIngredientDao.getId()), "someInstruction");
-
-        MvcResult createdRecipe = performPost("/api/v1/recipe", createRecipeRequest)
-                .andExpect(status().isCreated())
-                .andReturn();
-
-        //prepare the search criteria and by newly created id
-        Integer id = readByJsonPath(createdRecipe, "$.id");
-
-        RecipeSearchRequest request = new RecipeSearchRequest();
-        List<SearchCriteriaRequest> searchCriteriaList = new ArrayList<>();
-        SearchCriteriaRequest searchCriteria = new SearchCriteriaRequest("name",
-                "pudding",
-                "cn");
-
-        searchCriteriaList.add(searchCriteria);
-
-        request.setDataOption("ALL");
-        request.setSearchCriteriaRequests(searchCriteriaList);
-
-        //call search endpoint by previously created criteria
-        MvcResult result = performPost("/api/v1/recipe/search", request)
-                .andExpect(status().isOk())
-                .andReturn();
-
-        Optional<RecipeDao> optionalRecipe = recipeRepository.findById(id);
-
-
-        List<RecipeResponse> listRecipeList = getListFromMvcResult(result, RecipeResponse.class);
-        assertEquals(listRecipeList.size(), listRecipeList.size());
-        Assertions.assertTrue(optionalRecipe.isPresent());
-        Assertions.assertEquals(listRecipeList.get(0).getName(), optionalRecipe.get().getName());
-        Assertions.assertEquals(listRecipeList.get(0).getInstructions(), optionalRecipe.get().getInstructions());
-        Assertions.assertEquals(listRecipeList.get(0).getNumberOfServings(), optionalRecipe.get().getNumberOfServings());
-    }
 
 
 }
