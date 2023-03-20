@@ -168,6 +168,9 @@ JSON Schema
   "ingredient": "potato"
   }
   ```
+After ingredient creation below message will be visible in kafka dashboard
+![img_5.png](img_5.png)
+
 #### 2. Get an Ingredient
 This below end point will fetch ingredient from db based on provided id
 
@@ -246,6 +249,9 @@ Response
     "updatedAt": "2023-03-20T13:02:19.516386"
 }
   ```
+On Kafka dashboard below message will be posted
+![img_4.png](img_4.png)
+
 #### 2. Update Recipe
 This below api will create a new recipe in database
 ##### PUT (http://localhost:8080/api/v1/recipe)
