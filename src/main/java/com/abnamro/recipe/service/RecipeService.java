@@ -38,4 +38,4 @@ public interface RecipeService {
     public void deleteRecipe(int id);
 
     public List<RecipeResponse> getRecipeListByRecipeType(String recipeTpe);
-}
+    public List<RecipeResponse> getRecipesByServing(Integer numberOfServing);}

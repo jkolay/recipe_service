@@ -9,6 +9,9 @@ import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Set;
 
+/**
+ * Dao class for User
+ */
 @Entity
 @Getter
 @Setter

@@ -2,7 +2,7 @@ package com.abnamro.recipe.unit.services;
 
 import com.abnamro.recipe.exception.RecipeNotFoundException;
 import com.abnamro.recipe.mapper.CommonConfigMapper;
-import com.abnamro.recipe.model.persistence.RecipeDao;
+import com.abnamro.recipe.model.persistence.IngredientDao;import com.abnamro.recipe.model.persistence.RecipeDao;
 import com.abnamro.recipe.model.request.CreateRecipeRequest;
 import com.abnamro.recipe.model.request.UpdateRecipeRequest;
 import com.abnamro.recipe.model.response.RecipeResponse;
@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoExtension;import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.Optional;
 
@@ -33,6 +33,12 @@ public class RecipeServiceTest {
 
     @Mock
     private CommonConfigMapper commonConfigMapper;
+
+    @Mock
+    KafkaTemplate<String, IngredientDao> kafkaTemplate;
+
+    @Mock
+    KafkaTemplate<String, String> kafkaTemplateStr;
 
     @InjectMocks
     private RecipeServiceImpl recipeService;

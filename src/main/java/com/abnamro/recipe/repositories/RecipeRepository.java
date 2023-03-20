@@ -13,4 +13,4 @@ public interface RecipeRepository extends JpaRepository<RecipeDao, Integer>, Jpa
     RecipeDao findByNameEqualsIgnoreCase(String name);
 
     List<RecipeDao> findByTypeEqualsIgnoreCase(String recipeTpe);
-}
+    List<RecipeDao> findByNumberOfServingsGreaterThan(Integer numberOfServing);}

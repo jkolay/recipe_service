@@ -9,6 +9,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * Filter class related to CSRF
+ */
 public class CsrfCookieFilter extends OncePerRequestFilter {
 
     @Override

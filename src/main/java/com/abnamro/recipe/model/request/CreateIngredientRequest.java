@@ -12,7 +12,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-
+/**
+ * Ingredient request model object
+ */
 @Getter
 @Setter
 @AllArgsConstructor

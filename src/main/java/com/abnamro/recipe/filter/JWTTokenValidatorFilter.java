@@ -20,6 +20,9 @@ import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * JWT token validation filter
+ */
 public class JWTTokenValidatorFilter  extends OncePerRequestFilter {
 
     @Override

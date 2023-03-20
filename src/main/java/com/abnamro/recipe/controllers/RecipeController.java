@@ -80,6 +80,20 @@ public class RecipeController {
     }
 
     /**
+     * this api retrieves list recipes based on serving
+     *
+     * @param id id of the recipe which needs to be retrieved
+     * @return the recipe
+     */
+    @Operation(description = "List recipes by serving")
+    @RequestMapping(value = "search/serving/{numberOfServing}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.FOUND)
+    public ResponseEntity<List<RecipeResponse>> getRecipesByServing(@Parameter(description = "Serving number", required = true) @PathVariable(name = "numberOfServing") Integer numberOfServing) {
+        logger.info("Getting the recipes by its serving {}", numberOfServing);
+        return ResponseEntity.status(HttpStatus.FOUND).body(recipeService.getRecipesByServing(numberOfServing));
+    }
+
+    /**
      * this api creates a recipe in the system
      *
      * @param request the recipe request object

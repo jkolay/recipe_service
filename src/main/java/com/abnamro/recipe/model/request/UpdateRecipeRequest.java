@@ -14,6 +14,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Update recipe model object
+ */
 @Setter
 @Getter
 @AllArgsConstructor

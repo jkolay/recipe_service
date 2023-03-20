@@ -2,6 +2,9 @@ package com.abnamro.recipe.exception;
 
 import org.springframework.http.HttpStatus;
 
+/**
+ * The exception class for unavailable recipe
+ */
 public class RecipeNotFoundException extends RuntimeException implements CustomRecipeException {
 
     private HttpStatus status = HttpStatus.NOT_FOUND;

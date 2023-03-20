@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Ingredient service implementation class
+ */
 @Service
 @Transactional
 public class IngredientServiceImpl implements IngredientService {
@@ -43,6 +46,11 @@ public class IngredientServiceImpl implements IngredientService {
         this.commonConfigMapper = commonConfigMapper;this.kafkaTemplate = kafkaTemplate;
     this.kafkaTemplateStr = kafkaTemplateStr;}
 
+    /**
+     * implementation method to create a new ingredient
+     * @param request
+     * @return
+     */
     public IngredientResponse create(CreateIngredientRequest request) {
         if(ingredientRepository.findByIngredientEqualsIgnoreCase(request.getName())!=null){
             logger.error("Ingredient is already present in the application");
@@ -58,18 +66,33 @@ public class IngredientServiceImpl implements IngredientService {
         return commonConfigMapper.mapIngredientToIngredientResponse(ingredientDao);
     }
 
-
+    /**
+     * implementation to retrieve ingredient by ids
+     * @param ingredientIds
+     * @return
+     */
     public Set<IngredientDao> getIngredientsByIds(List<Integer> ingredientIds) {
         return ingredientIds.stream()
                 .map(this::findById)
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * implementation to retrieve ingredient by id
+     * @param id
+     * @return
+     */
     private IngredientDao findById(int id) {
         return ingredientRepository.findById(id)
                 .orElseThrow(() -> new RecipeNotFoundException(RecipeValidationMessageConfig.INGREDIENT_IS_NOT_AVAILABLE + id));
     }
 
+    /**
+     * implementation to retrieve list of ingredients
+     * @param page
+     * @param size
+     * @return
+     */
     public List<IngredientResponse> list(int page, int size) {
         Pageable pageRequest
                 = PageRequest.of(page, size);
@@ -78,6 +101,10 @@ public class IngredientServiceImpl implements IngredientService {
                 .getContent();
     }
 
+    /**
+     * implementation to delete ingredient by id
+     * @param id
+     */
     public void delete(int id) {
         if (!ingredientRepository.existsById(id)) {
             logger.error("Ingredient is not found ");
@@ -87,10 +114,20 @@ public class IngredientServiceImpl implements IngredientService {
         kafkaTemplateStr.send(TOPIC,"Ingredient deleted with id "+id);
     }
 
+    /**
+     * implementation to retrieve ingredient by id
+     * @param id
+     * @return
+     */
     public IngredientResponse getIngredient(Integer id) {
         return commonConfigMapper.mapIngredientToIngredientResponse(findById(id));
     }
 
+    /**
+     * implementation to create list of ingredients
+     * @param requests
+     * @return
+     */
     public List<IngredientResponse> createIngredients(List<CreateIngredientRequest> requests) {
         logger.info("Ingredients are getting added to app");
         return requests.stream().map(ingredient->create(ingredient)).collect(Collectors.toList());

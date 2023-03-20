@@ -129,4 +129,8 @@ public class RecipeServiceImpl implements RecipeService {
         return  commonConfigMapper.mapRecipesToRecipeResponses(recipeRepository.findByTypeEqualsIgnoreCase(recipeTpe));
     }
 
+  @Override
+  public List<RecipeResponse> getRecipesByServing(Integer numberOfServing) {
+    return commonConfigMapper.mapRecipesToRecipeResponses(recipeRepository.findByNumberOfServingsGreaterThan(numberOfServing-1));
+  }
 }

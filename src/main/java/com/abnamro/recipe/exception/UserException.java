@@ -2,6 +2,9 @@ package com.abnamro.recipe.exception;
 
 import org.springframework.http.HttpStatus;
 
+/**
+ * Exception for user related exception
+ */
 public class UserException extends  RuntimeException implements CustomRecipeException {
 
     private HttpStatus status = HttpStatus.NOT_FOUND;

@@ -1,26 +1,24 @@
 package com.abnamro.recipe.unit.controllers;
 
 
-import com.abnamro.recipe.builder.IngredientTestDataBuilder;
-import com.abnamro.recipe.controllers.IngredientController;
-import com.abnamro.recipe.model.request.CreateIngredientRequest;
-import com.abnamro.recipe.model.response.IngredientResponse;
-import com.abnamro.recipe.service.IngredientService;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
+
+import com.abnamro.recipe.controllers.IngredientController;
+import com.abnamro.recipe.model.request.CreateIngredientRequest;
+import com.abnamro.recipe.model.response.IngredientResponse;
+import com.abnamro.recipe.service.IngredientService;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class IngredientControllerTest {
@@ -33,7 +31,7 @@ public class IngredientControllerTest {
     @Test
     public void test_createIngredient_successfully() {
         when(ingredientService.create(any(CreateIngredientRequest.class))).thenReturn(new IngredientResponse());
-        CreateIngredientRequest request = IngredientTestDataBuilder.createIngredientRequest();
+    CreateIngredientRequest request = new CreateIngredientRequest();
         assertNotNull(ingredientController.createIngredient(request));
     }
 

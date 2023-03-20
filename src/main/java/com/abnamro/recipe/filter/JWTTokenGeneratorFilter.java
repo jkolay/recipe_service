@@ -20,6 +20,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * JWT token creation filter
+ */
 public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
 
     @Override

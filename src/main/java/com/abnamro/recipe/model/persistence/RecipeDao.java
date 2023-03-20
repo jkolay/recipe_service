@@ -16,6 +16,10 @@ import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+/**
+ * Dao class for recipe
+ */
+
 @Entity
 @DynamicUpdate
 @Table(name = "recipes")

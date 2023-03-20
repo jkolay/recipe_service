@@ -21,6 +21,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+/**
+ * Dao class for ingredient
+ */
 @Entity
 @DynamicUpdate
 @Table(name = "ingredients")

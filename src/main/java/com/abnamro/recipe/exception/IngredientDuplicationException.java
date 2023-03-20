@@ -2,6 +2,9 @@ package com.abnamro.recipe.exception;
 
 import org.springframework.http.HttpStatus;
 
+/**
+ * Exception class for Duplicate Ingredient
+ */
 public class IngredientDuplicationException extends RuntimeException implements CustomRecipeException {
 
     private HttpStatus status = HttpStatus.NOT_FOUND;

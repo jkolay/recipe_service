@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Username password authenticator class
+ */
 @Component
 public class RecipeServiceUsernamePwdAuthenticationProvider implements AuthenticationProvider {
 

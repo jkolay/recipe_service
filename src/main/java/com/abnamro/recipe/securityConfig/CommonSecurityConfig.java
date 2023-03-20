@@ -14,6 +14,9 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+/**
+ * Common security config class
+ */
 @Configuration
 public class CommonSecurityConfig {
 

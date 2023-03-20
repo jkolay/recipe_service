@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
+/**
+ * Dao class for Authority
+ */
 @Entity
 @Table(name = "authorities")
 @Getter
