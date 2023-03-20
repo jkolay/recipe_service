@@ -31,6 +31,9 @@ Table - recipes,ingredients,recipe_ingredient are used to store the recipes data
 For development and testing purposes, the Embedded H2 Database provided by Spring Boot framework is also utilized
 
 
+![recipe_img](https://user-images.githubusercontent.com/65228852/226355738-a3813fd2-98e1-4dfb-af7e-83dd0fcd6315.jpeg)
+
+
 
 ----------------------------------------- 
 
