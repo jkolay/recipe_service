@@ -133,7 +133,7 @@ The X-XSRF-TOKEN value will be unique for each session. It will be retrieved fro
 For every PUT/POST/DELETE call from postman, the first call be declared as unauthenticated and a XSRF-TOKEN value will 
 be provided in the cookies. 
 
-![img_1.png](img_1.png)522c627a-0194-4933-ba82-7bc10ef4fd74
+![img_1.png](img_1.png)
 
 The highlighted value needs to be copied. And then paste the value in X-XSRF-TOKEN value. The request will pass 
 and give the expected result.
