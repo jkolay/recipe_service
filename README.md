@@ -60,7 +60,7 @@ Feature	Software Module Used
 ### Steps to build Web Service
 
 1. Download zip from https://github.com/jkolay/recipe_service
-2. Move to recipe and follow Install application command line in recipe folder
+2. Move to recipe and follow Install application command line in recipe_service folder
 3. Build project
 
   ```
