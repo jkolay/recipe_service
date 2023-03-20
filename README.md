@@ -82,6 +82,13 @@ Command to execute:
   ```
   $ java -jar recipe-0.0.1-SNAPSHOT.jar
   ```
+### Kafka Set up
+
+1. Open kafka Installation folder
+2. Execute below command and consume the recipe topic
+ ```text
+bin/kafka-console-consumer.sh --topic recipe  --from-beginning --bootstrap-server localhost:9092
+```
 
 ### Swagger URL
 
