@@ -10,7 +10,6 @@ import com.abnamro.recipe.model.response.UserResponse;
 import com.abnamro.recipe.repositories.AuthorityRepository;
 import com.abnamro.recipe.repositories.LoginRepository;
 import com.abnamro.recipe.service.UserManagementService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -22,12 +21,24 @@ import java.util.List;
 
 @Service
 public class UserManagementServiceImpl implements UserManagementService {
-  @Autowired
-  AuthorityRepository authorityRepository;
-  @Autowired private LoginRepository loginRepository;
-  @Autowired private PasswordEncoder passwordEncoder;
-  @Autowired private UserMapper userMapper;
 
+  private final AuthorityRepository authorityRepository;
+  private final LoginRepository loginRepository;
+  private final PasswordEncoder passwordEncoder;
+  private final UserMapper userMapper;
+
+  public UserManagementServiceImpl(AuthorityRepository authorityRepository, LoginRepository loginRepository, PasswordEncoder passwordEncoder, UserMapper userMapper) {
+    this.authorityRepository = authorityRepository;
+    this.loginRepository = loginRepository;
+    this.passwordEncoder = passwordEncoder;
+    this.userMapper = userMapper;
+  }
+
+  /**
+   * add a new user to the app
+   * @param userRequestModel
+   * @return
+   */
   @Override
   public ResponseEntity<String> registerUser(UserRequestModel userRequestModel) {
     UserDao savedCustomer = null;
@@ -61,6 +72,11 @@ public class UserManagementServiceImpl implements UserManagementService {
     return response;
   }
 
+  /**
+   * Authenticate user and generate auth token on successful authorization
+   * @param authentication
+   * @return
+   */
   @Override
   public UserResponse getUserDetailsAfterLogin(Authentication authentication) {
     List<UserDao> customers = loginRepository.findByEmail(authentication.getName());

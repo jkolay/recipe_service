@@ -6,6 +6,9 @@ import com.abnamro.recipe.model.response.UserResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 
+/**
+ * Service interface for user management
+ */
 public interface UserManagementService {
   ResponseEntity<String> registerUser(UserRequestModel userManagementService);
 

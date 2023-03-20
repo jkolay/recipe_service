@@ -8,6 +8,9 @@ import com.abnamro.recipe.model.response.IngredientResponse;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Service interface class for ingredient
+ */
 public interface IngredientService {
     public IngredientResponse create(CreateIngredientRequest request) ;
 

@@ -24,7 +24,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-
+/**
+ * Service interface  for Recipe
+ */
 public interface RecipeService {
 
     public RecipeResponse createRecipe(CreateRecipeRequest createRecipeRequest) ;

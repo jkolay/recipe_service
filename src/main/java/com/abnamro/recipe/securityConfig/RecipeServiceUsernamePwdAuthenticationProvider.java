@@ -30,6 +30,12 @@ public class RecipeServiceUsernamePwdAuthenticationProvider implements Authentic
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * Authenticate the user and password
+     * @param authentication
+     * @return
+     * @throws AuthenticationException
+     */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
@@ -47,6 +53,11 @@ public class RecipeServiceUsernamePwdAuthenticationProvider implements Authentic
         }
     }
 
+    /**
+     * retrieves roles for authenticated users
+     * @param authorities
+     * @return
+     */
     private List<GrantedAuthority> getGrantedAuthorities(Set<AuthorityDao> authorities) {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
     for (AuthorityDao authorityDao : authorities) {

@@ -19,7 +19,12 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  */
 @Configuration
 public class CommonSecurityConfig {
-
+  /**
+   * create custom security chain for spring web security
+   * @param http
+   * @return
+   * @throws Exception
+   */
   @Bean
   SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
     CsrfTokenRequestAttributeHandler requestHandler = new CsrfTokenRequestAttributeHandler();
@@ -64,11 +69,19 @@ public class CommonSecurityConfig {
     return http.build();
   }
 
+  /**
+   * creates bean object for password encoder
+   * @return
+   */
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
 
+  /**
+   * creates a bean which helps to ignore authentication and authorization for swagger
+   * @return
+   */
   @Bean
   public WebSecurityCustomizer webSecurityCustomizer() {
     return web -> web.ignoring().requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**");

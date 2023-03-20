@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+/**
+ * Repository class for recipe
+ */
 @Repository
 public interface RecipeRepository extends JpaRepository<RecipeDao, Integer>, JpaSpecificationExecutor<RecipeDao> {
 
