@@ -10,11 +10,12 @@ import com.abnamro.recipe.model.request.CreateIngredientRequest;
 import com.abnamro.recipe.model.response.IngredientResponse;
 import com.abnamro.recipe.repositories.IngredientRepository;
 import com.abnamro.recipe.service.IngredientService;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.kafka.core.KafkaTemplate;import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -27,24 +28,15 @@ import java.util.stream.Collectors;
  */
 @Service
 @Transactional
+@Slf4j(topic = "RecipeServiceImpl")
 public class IngredientServiceImpl implements IngredientService {
     private final IngredientRepository ingredientRepository;
     private final CommonConfigMapper commonConfigMapper;
 
-    @Qualifier("kafkaTemplate")
-    private final KafkaTemplate<String, IngredientDao> kafkaTemplate;
-
-    @Qualifier("kafkaTemplateStr")
-    private final KafkaTemplate<String, String> kafkaTemplateStr;
-
-    private static final String TOPIC="recipe";
-
-    private final Logger logger = LoggerFactory.getLogger(IngredientService.class);
-
-    public IngredientServiceImpl(IngredientRepository ingredientRepository, CommonConfigMapper commonConfigMapper, KafkaTemplate<String,IngredientDao> kafkaTemplate, KafkaTemplate<String,String> kafkaTemplateStr) {
+    public IngredientServiceImpl(IngredientRepository ingredientRepository, CommonConfigMapper commonConfigMapper) {
         this.ingredientRepository = ingredientRepository;
-        this.commonConfigMapper = commonConfigMapper;this.kafkaTemplate = kafkaTemplate;
-    this.kafkaTemplateStr = kafkaTemplateStr;}
+        this.commonConfigMapper=commonConfigMapper;
+       }
 
     /**
      * implementation method to create a new ingredient
@@ -53,16 +45,14 @@ public class IngredientServiceImpl implements IngredientService {
      */
     public IngredientResponse create(CreateIngredientRequest request) {
         if(ingredientRepository.findByIngredientEqualsIgnoreCase(request.getName())!=null){
-            logger.error("Ingredient is already present in the application");
+            log.error("Ingredient is already present in the application");
             throw new IngredientDuplicationException(RecipeValidationMessageConfig.INGREDIENT_ALREADY_EXISTS);
         }
         IngredientDao ingredientDao = commonConfigMapper.mapCreateIngredientRequestToIngredient(request);
         ingredientDao.setCreatedAt(LocalDateTime.now());
         ingredientDao.setUpdatedAt(LocalDateTime.now());
         ingredientDao = ingredientRepository.save(ingredientDao);
-        logger.info("Created ingredient successfully ");
-        kafkaTemplateStr.send(TOPIC,"Ingredient created");
-        kafkaTemplate.send(TOPIC,ingredientDao);
+        log.info("Created ingredient successfully ");
         return commonConfigMapper.mapIngredientToIngredientResponse(ingredientDao);
     }
 
@@ -107,11 +97,10 @@ public class IngredientServiceImpl implements IngredientService {
      */
     public void delete(int id) {
         if (!ingredientRepository.existsById(id)) {
-            logger.error("Ingredient is not found ");
+            log.error("Ingredient is not found ");
             throw new RecipeNotFoundException(RecipeValidationMessageConfig.INGREDIENT_IS_NOT_AVAILABLE);
         }
         ingredientRepository.deleteById(id);
-        kafkaTemplateStr.send(TOPIC,"Ingredient deleted with id "+id);
     }
 
     /**
@@ -129,7 +118,7 @@ public class IngredientServiceImpl implements IngredientService {
      * @return
      */
     public List<IngredientResponse> createIngredients(List<CreateIngredientRequest> requests) {
-        logger.info("Ingredients are getting added to app");
+        log.info("Ingredients are getting added to app");
         return requests.stream().map(ingredient->create(ingredient)).collect(Collectors.toList());
     }
 }
