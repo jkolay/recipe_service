@@ -53,8 +53,7 @@ Feature	Software Module Used
 
 - Java 17
 - Maven 3.x
-- Git 
-- Kafka set up
+- Git
 - Postman
 
 ### Steps to build Web Service
@@ -82,13 +81,6 @@ Command to execute:
   ```
   $ java -jar recipe-0.0.1-SNAPSHOT.jar
   ```
-### Kafka Set up
-
-1. Open kafka Installation folder
-2. Execute below command and consume the recipe topic
- ```text
-bin/kafka-console-consumer.sh --topic recipe  --from-beginning --bootstrap-server localhost:9092
-```
 
 ### Swagger URL
 
@@ -249,8 +241,7 @@ Response
     "updatedAt": "2023-03-20T13:02:19.516386"
 }
   ```
-On Kafka dashboard below message will be posted
-![img_4.png](img_4.png)
+
 
 #### 2. Update Recipe
 This below api will create a new recipe in database
@@ -314,8 +305,19 @@ Response
   ```
 #### 5. Search recipe/recipes
 This below end point will search list of recipes from db based on serving quantity
-##### POST (http://localhost:8080/api/v1/recipe/search/serving/{Serving_quantity})
+##### POST (http://localhost:8080/api/v1/recipe/search)
 
+JSON Schema
+  ```
+  {
+  "isVegetarian": true,
+  "servings": 5,
+  "ingredientIn":"potato",
+  "ingredientEx": "salmon",
+  "text": "mash"
+
+}
+ ```
 Response
  ```
   [{
@@ -342,7 +344,7 @@ Response
   200 OK
   ```
 ### Future Enhancements
-- Design and Implementation of free text search of the api
+-ui interface implementation
 - Write automation test cases
 
 

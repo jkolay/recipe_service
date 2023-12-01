@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Map;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -15,5 +16,6 @@ public class RecipeErrorModel {
     private String description;
     private String code;
     private ErrorSeverityLevelCodeType severityLevel;
+    private UUID traceId;
 
 }

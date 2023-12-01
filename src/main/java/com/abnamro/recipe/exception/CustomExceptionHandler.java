@@ -7,6 +7,7 @@ import com.abnamro.recipe.model.error.ErrorSeverityLevelCodeType;
 import com.abnamro.recipe.model.error.RecipeErrorModel;
 import com.abnamro.recipe.model.error.RecipeRequestErrorModel;
 import jakarta.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpHeaders;
@@ -27,12 +28,14 @@ import org.springframework.web.util.WebUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * This is the custom exception handler class
  */
 @ControllerAdvice
 @RestController
+@Slf4j
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
@@ -53,7 +56,9 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-        final RecipeRequestErrorModel error = new RecipeRequestErrorModel(errors, RecipeErrorCodeConfig.INVALID_INPUT, ErrorSeverityLevelCodeType.ERROR);
+        UUID uuid = UUID.randomUUID();
+        log.error(ex.getMessage());
+        final RecipeRequestErrorModel error = new RecipeRequestErrorModel(errors, RecipeErrorCodeConfig.INVALID_INPUT, ErrorSeverityLevelCodeType.ERROR,uuid);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -62,37 +67,47 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ResponseBody
     public ResponseEntity<Object> handleNotFoundException(RecipeNotFoundException ex) {
         HttpStatus status = ex.getStatus() == null ? HttpStatus.NOT_FOUND : ex.getStatus();
-        final RecipeErrorModel error = new RecipeErrorModel(ex.getMessage(), RecipeErrorCodeConfig.INVALID_INPUT, ErrorSeverityLevelCodeType.ERROR);
+        UUID uuid = UUID.randomUUID();
+        log.error(String.valueOf(ex.getMessage()));
+        final RecipeErrorModel error = new RecipeErrorModel(ex.getMessage(), RecipeErrorCodeConfig.INVALID_INPUT, ErrorSeverityLevelCodeType.ERROR,uuid);
         return new ResponseEntity<>(error, status);
     }
     @ExceptionHandler(UserException.class)
     @ResponseBody
     public ResponseEntity<Object> handleUserException(UserException ex) {
+        UUID uuid = UUID.randomUUID();
+        log.error(String.valueOf(ex.getMessage()));
         HttpStatus status = ex.getStatus() == null ? HttpStatus.BAD_REQUEST : ex.getStatus();
-        final RecipeErrorModel error = new RecipeErrorModel(ex.getMessage(), RecipeErrorCodeConfig.INVALID_INPUT, ErrorSeverityLevelCodeType.ERROR);
+        final RecipeErrorModel error = new RecipeErrorModel(ex.getMessage(), RecipeErrorCodeConfig.INVALID_INPUT, ErrorSeverityLevelCodeType.ERROR,uuid);
         return new ResponseEntity<>(error, status);
     }
 
     @ExceptionHandler(RecipeDuplicationException.class)
     @ResponseBody
     public ResponseEntity<Object> handleNotFoundException(RecipeDuplicationException ex) {
+        UUID uuid = UUID.randomUUID();
+        log.error(String.valueOf(ex.getMessage()));
         HttpStatus status = ex.getStatus() == null ? HttpStatus.NOT_FOUND : ex.getStatus();
-        final RecipeErrorModel error = new RecipeErrorModel(ex.getMessage(), RecipeErrorCodeConfig.INVALID_INPUT, ErrorSeverityLevelCodeType.ERROR);
+        final RecipeErrorModel error = new RecipeErrorModel(ex.getMessage(), RecipeErrorCodeConfig.INVALID_INPUT, ErrorSeverityLevelCodeType.ERROR,uuid);
         return new ResponseEntity<>(error, status);
     }
 
     @ExceptionHandler(IngredientDuplicationException.class)
     @ResponseBody
     public ResponseEntity<Object> handleNotFoundException(IngredientDuplicationException ex) {
+        UUID uuid = UUID.randomUUID();
+        log.error(String.valueOf(ex.getMessage()));
         HttpStatus status = ex.getStatus() == null ? HttpStatus.NOT_FOUND : ex.getStatus();
-        final RecipeErrorModel error = new RecipeErrorModel(ex.getMessage(), RecipeErrorCodeConfig.INVALID_INPUT, ErrorSeverityLevelCodeType.ERROR);
+        final RecipeErrorModel error = new RecipeErrorModel(ex.getMessage(), RecipeErrorCodeConfig.INVALID_INPUT, ErrorSeverityLevelCodeType.ERROR,uuid);
         return new ResponseEntity<>(error, status);
     }
 
     @ExceptionHandler({IllegalArgumentException.class, InvalidDataAccessApiUsageException.class})
     @ResponseBody
     public ResponseEntity<Object> handleArgumentException(Exception ex) {
-        final RecipeErrorModel error = new RecipeErrorModel(ex.getMessage(), RecipeErrorCodeConfig.INVALID_INPUT, ErrorSeverityLevelCodeType.ERROR);
+        UUID uuid = UUID.randomUUID();
+        log.error(String.valueOf(ex.getMessage()));
+        final RecipeErrorModel error = new RecipeErrorModel(ex.getMessage(), RecipeErrorCodeConfig.INVALID_INPUT, ErrorSeverityLevelCodeType.ERROR,uuid);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -100,12 +115,14 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseBody
     public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        UUID uuid = UUID.randomUUID();
+        log.error(String.valueOf(ex.getMessage()));
         String message = ex.getMessage();
         if (ex.getCause() instanceof org.hibernate.exception.ConstraintViolationException) {
             message = RecipeValidationMessageConfig.DB_CONSTRAINT_VIOLATED;
         }
 
-        final RecipeErrorModel error = new RecipeErrorModel(message, RecipeErrorCodeConfig.DB_ERROR, ErrorSeverityLevelCodeType.ERROR);
+        final RecipeErrorModel error = new RecipeErrorModel(message, RecipeErrorCodeConfig.DB_ERROR, ErrorSeverityLevelCodeType.ERROR,uuid);
         return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
     }
 
@@ -113,7 +130,9 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseBody
     public final ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex) {
-        final RecipeErrorModel error = new RecipeErrorModel(ex.getMessage(), RecipeErrorCodeConfig.DB_ERROR, ErrorSeverityLevelCodeType.ERROR);
+        UUID uuid = UUID.randomUUID();
+        log.error(String.valueOf(ex.getMessage()));
+        final RecipeErrorModel error = new RecipeErrorModel(ex.getMessage(), RecipeErrorCodeConfig.DB_ERROR, ErrorSeverityLevelCodeType.ERROR,uuid);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
@@ -121,8 +140,9 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     @ResponseBody
     public ResponseEntity<Object> handleRuntimeException(RuntimeException ex) {
-        ex.printStackTrace();
-        final RecipeErrorModel error = new RecipeErrorModel(ex.getMessage(), RecipeErrorCodeConfig.INTERNAL_ERROR, ErrorSeverityLevelCodeType.ERROR);
+        UUID uuid = UUID.randomUUID();
+        log.error(String.valueOf(ex.getMessage()));
+        final RecipeErrorModel error = new RecipeErrorModel(ex.getMessage(), RecipeErrorCodeConfig.INTERNAL_ERROR, ErrorSeverityLevelCodeType.ERROR,uuid);
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -130,7 +150,9 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseEntity<Object> handleGlobalException(Exception ex) {
-        final RecipeErrorModel error = new RecipeErrorModel(ex.getMessage(), RecipeErrorCodeConfig.GLOBAL_ERROR, ErrorSeverityLevelCodeType.ERROR);
+        UUID uuid = UUID.randomUUID();
+        log.error(String.valueOf(ex.getMessage()));
+        final RecipeErrorModel error = new RecipeErrorModel(ex.getMessage(), RecipeErrorCodeConfig.GLOBAL_ERROR, ErrorSeverityLevelCodeType.ERROR,uuid);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
