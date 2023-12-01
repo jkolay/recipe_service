@@ -82,6 +82,7 @@ Command to execute:
   $ java -jar recipe-0.0.1-SNAPSHOT.jar
   ```
 
+
 ### Swagger URL
 
 ```text
@@ -344,7 +345,7 @@ Response
   200 OK
   ```
 ### Future Enhancements
--ui interface implementation
+- Integration with UI
 - Write automation test cases
 
 
