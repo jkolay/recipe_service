@@ -11,10 +11,7 @@ import com.abnamro.recipe.model.response.IngredientResponse;
 import com.abnamro.recipe.repositories.IngredientRepository;
 import com.abnamro.recipe.service.IngredientService;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,7 +45,7 @@ public class IngredientServiceImpl implements IngredientService {
             log.error("Ingredient is already present in the application");
             throw new IngredientDuplicationException(RecipeValidationMessageConfig.INGREDIENT_ALREADY_EXISTS);
         }
-        IngredientDao ingredientDao = commonConfigMapper.mapCreateIngredientRequestToIngredient(request);
+        var ingredientDao = commonConfigMapper.mapCreateIngredientRequestToIngredient(request);
         ingredientDao.setCreatedAt(LocalDateTime.now());
         ingredientDao.setUpdatedAt(LocalDateTime.now());
         ingredientDao = ingredientRepository.save(ingredientDao);
@@ -84,7 +81,7 @@ public class IngredientServiceImpl implements IngredientService {
      * @return
      */
     public List<IngredientResponse> list(int page, int size) {
-        Pageable pageRequest
+        var pageRequest
                 = PageRequest.of(page, size);
         return ingredientRepository.findAll(pageRequest)
                 .map(ingredient -> commonConfigMapper.mapIngredientToIngredientResponse(ingredient))

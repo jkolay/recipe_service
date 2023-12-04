@@ -13,7 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;import org.springframework.kafka.core.KafkaTemplate;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +34,6 @@ public class IngredientServiceTest {
     @Mock
     private CommonConfigMapper commonConfigMapper;
 
-    @Mock
-    KafkaTemplate<String, IngredientDao> kafkaTemplate;
-
-    @Mock
-    KafkaTemplate<String, String> kafkaTemplateStr;
 
     @InjectMocks
     private IngredientServiceImpl ingredientService;

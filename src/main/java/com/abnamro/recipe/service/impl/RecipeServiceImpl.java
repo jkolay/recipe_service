@@ -4,12 +4,10 @@ import com.abnamro.recipe.config.RecipeValidationMessageConfig;
 import com.abnamro.recipe.exception.IngredientDuplicationException;
 import com.abnamro.recipe.exception.RecipeNotFoundException;
 import com.abnamro.recipe.mapper.CommonConfigMapper;
-import com.abnamro.recipe.model.request.RecipeSearchRequest;
 import com.abnamro.recipe.model.persistence.IngredientDao;
-import com.abnamro.recipe.model.persistence.RecipeDao;
 import com.abnamro.recipe.model.request.CreateRecipeRequest;
+import com.abnamro.recipe.model.request.RecipeSearchRequest;
 import com.abnamro.recipe.model.request.UpdateRecipeRequest;
-
 import com.abnamro.recipe.model.response.RecipeResponse;
 import com.abnamro.recipe.repositories.RecipeRepository;
 import com.abnamro.recipe.service.IngredientService;
@@ -17,7 +15,6 @@ import com.abnamro.recipe.service.RecipeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,17 +48,17 @@ public class RecipeServiceImpl implements RecipeService {
      * @return
      */
     public RecipeResponse createRecipe(CreateRecipeRequest createRecipeRequest) {
-        RecipeDao existingRecipeDao = recipeRepository.findByNameEqualsIgnoreCase(createRecipeRequest.getName());
+        var existingRecipeDao = recipeRepository.findByNameEqualsIgnoreCase(createRecipeRequest.getName());
         if (existingRecipeDao != null) {
             log.error("Recipe is already available in the application");
             throw new IngredientDuplicationException(RecipeValidationMessageConfig.RECIPE_ALREADY_EXISTS + existingRecipeDao.getId());
         }
         Set<IngredientDao> ingredientDaos = ingredientService.getIngredientsByIds(createRecipeRequest.getIngredientIds());
-        RecipeDao recipeDao = commonConfigMapper.mapCreateRecipeRequestToRecipe(createRecipeRequest);
+        var recipeDao = commonConfigMapper.mapCreateRecipeRequestToRecipe(createRecipeRequest);
         recipeDao.setRecipeIngredients(ingredientDaos);
         recipeDao.setCreatedAt(LocalDateTime.now());
         recipeDao.setUpdatedAt(LocalDateTime.now());
-        RecipeDao createdRecipeDao = recipeRepository.save(recipeDao);
+        var createdRecipeDao = recipeRepository.save(recipeDao);
         log.info("Recipe is created successfully");
         return commonConfigMapper.mapRecipeToRecipeResponse(createdRecipeDao);
     }
@@ -74,7 +71,7 @@ public class RecipeServiceImpl implements RecipeService {
      */
     public List<RecipeResponse> getRecipeList(int page, int size) {
         log.info("Recipe list is getting retrieved");
-        Pageable pageRequest = PageRequest.of(page, size);
+        var pageRequest = PageRequest.of(page, size);
         return commonConfigMapper.mapRecipesToRecipeResponses(recipeRepository.findAll(pageRequest).getContent());
     }
 
@@ -85,7 +82,7 @@ public class RecipeServiceImpl implements RecipeService {
      */
     public RecipeResponse getRecipeById(int id) {
         log.info("Recipe  is getting retrieved by recipe id");
-        RecipeDao recipeDao = recipeRepository.findById(id).orElseThrow(() -> new RecipeNotFoundException(RecipeValidationMessageConfig.RECIPE_IS_NOT_FOUND));
+        var recipeDao = recipeRepository.findById(id).orElseThrow(() -> new RecipeNotFoundException(RecipeValidationMessageConfig.RECIPE_IS_NOT_FOUND));
         return commonConfigMapper.mapRecipeToRecipeResponse(recipeDao);
     }
 
@@ -96,11 +93,11 @@ public class RecipeServiceImpl implements RecipeService {
      */
     public RecipeResponse updateRecipe(UpdateRecipeRequest updateRecipeRequest) {
         log.info("recipe is getting updated");
-        RecipeDao existingRecipeDao = recipeRepository.findById(updateRecipeRequest.getId()).orElseThrow(() -> new RecipeNotFoundException(RecipeValidationMessageConfig.RECIPE_IS_NOT_FOUND));
+        var existingRecipeDao = recipeRepository.findById(updateRecipeRequest.getId()).orElseThrow(() -> new RecipeNotFoundException(RecipeValidationMessageConfig.RECIPE_IS_NOT_FOUND));
 
-        Set<IngredientDao> ingredientDaos = Optional.ofNullable(updateRecipeRequest.getIngredientIds()).map(ingredientService::getIngredientsByIds).orElse(null);
+        var ingredientDaos = Optional.ofNullable(updateRecipeRequest.getIngredientIds()).map(ingredientService::getIngredientsByIds).orElse(null);
 
-        RecipeDao recipeDao = commonConfigMapper.mapUpdateRecipeRequestToRecipe(updateRecipeRequest);
+        var recipeDao = commonConfigMapper.mapUpdateRecipeRequestToRecipe(updateRecipeRequest);
         recipeDao.setUpdatedAt(LocalDateTime.now());
         recipeDao.setCreatedAt(existingRecipeDao.getCreatedAt());
         if (Optional.ofNullable(ingredientDaos).isPresent()) {
@@ -126,13 +123,13 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Transactional(readOnly = true)
     public List<RecipeResponse> search(RecipeSearchRequest request) {
-        List<RecipeDao> recipeDaos= recipeRepository.search(
+        var recipeDaos= recipeRepository.search(
                 request.getIsVegetarian(),
                 request.getServings(),
                 request.getIngredientIn(),
                 request.getIngredientEx(),
                 request.getText());
-        final List<RecipeResponse> recipes = recipeDaos.stream()
+        final var recipes = recipeDaos.stream()
                 .map(recipe -> commonConfigMapper.mapRecipeToRecipeResponse(recipe)).collect(Collectors.toList());
         if (recipes.isEmpty()) {
             log.error(RecipeValidationMessageConfig.RECIPE_IS_NOT_FOUND);
