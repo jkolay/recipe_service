@@ -19,7 +19,6 @@ Springboot-starter-web module used as a framework to implement ReSTful api end p
 The service layer is a layer in an application that facilitates communication between the api end point and the data access layer. Additionally, business logic is stored in the service layer.
 It is responsible for interacting with Data Access Layer and transferring the recipes data as required by top and below layers
 Further it is a module added to decouple business logic of recipes data transfer and mapping from/to API layer.
-After creation of modification of recipe or ingredient it will produce message to kafka topic named **'recipe'**
 
 - Data Access Layer\
 The persistence layer contains all the database storage logic. It is responsible for converting business objects to the database row and vice-versa with Object Relationship Mapping (ORM).
@@ -161,8 +160,7 @@ JSON Schema
   "ingredient": "potato"
   }
   ```
-After ingredient creation below message will be visible in kafka dashboard
-![img_5.png](img_5.png)
+
 
 #### 2. Get an Ingredient
 This below end point will fetch ingredient from db based on provided id
