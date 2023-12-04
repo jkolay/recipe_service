@@ -44,7 +44,7 @@ public class UserManagementServiceImpl implements UserManagementService {
     UserDao savedCustomer = null;
     ResponseEntity response = null;
     try {
-      UserDao user = userMapper.mapUserRequestModelToCustomer(userRequestModel);
+      var user = userMapper.mapUserRequestModelToCustomer(userRequestModel);
       if (!userRequestModel.getRole().equalsIgnoreCase("ADMIN")
           && !userRequestModel.getRole().equalsIgnoreCase("CUSTOMER")) {
         throw new UserException("User role needs to be either admin or customer");
@@ -55,7 +55,7 @@ public class UserManagementServiceImpl implements UserManagementService {
       savedCustomer = loginRepository.save(user);
       String authorityName = "ROLE_" + user.getRole().toUpperCase();
 
-      AuthorityDao authority = new AuthorityDao();
+      var authority = new AuthorityDao();
       authority.setName(authorityName);
       authority.setUserDao(savedCustomer);
       authorityRepository.save(authority);
