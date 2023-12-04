@@ -303,8 +303,8 @@ Response
 }]
   ```
 #### 5. Search recipe/recipes
-This below end point will search list of recipes from db based on serving quantity
-##### POST (http://localhost:8080/api/v1/recipe/search)
+This below end point will search list of recipes from db based on filters
+##### GET (http://localhost:8080/api/v1/recipe)
 
 JSON Schema
   ```
