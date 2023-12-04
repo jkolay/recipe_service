@@ -78,7 +78,7 @@ recipe-0.0.1-SNAPSHOT.jar
 Command to execute:
 
   ```
-  $ java -jar recipe-0.0.1-SNAPSHOT.jar
+  $ java -jar -Dspring.profiles.active=dev recipe-0.0.1-SNAPSHOT.jar
   ```
 
 
