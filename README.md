@@ -262,7 +262,7 @@ Response
   ```
 #### 3. Get a recipe
 This below end point will fetch recipe from db based on provided id
-##### GET (ttp://localhost:8080/api/v1/recipe/search/{recipe-id})
+##### GET (http://localhost:8080/api/v1/recipe/search/{recipe-id})
 Response
  ```
   {
@@ -283,7 +283,7 @@ Response
   ```
 #### 4. Get a list of recipe
 This below end point will fetch list of recipes from db based on page number and number of records need to fetched in a page
-##### GET (ttp://localhost:8080/api/v1/recipe/search/page/{page-number}/size/{size})
+##### GET (http://localhost:8080/api/v1/recipe/search/page/{page-number}/size/{size})
 Response
  ```
   [{
